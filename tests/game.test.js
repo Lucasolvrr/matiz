@@ -142,3 +142,36 @@ test('fluxo completo: tempo, bloqueios e pontuação acumulada', () => {
   assert.equal(game.total, 0);
   assert.equal(game.roundIndex, 0);
 });
+
+function neighborAvg(options) {
+  let sum = 0, n = 0;
+  for (let p = 0; p < 36; p++) {
+    const r = Math.floor(p / 6), c = p % 6;
+    if (c < 5) { sum += CM.deltaE2000(options[p].lab, options[p + 1].lab); n++; }
+    if (r < 5) { sum += CM.deltaE2000(options[p].lab, options[p + 6].lab); n++; }
+  }
+  return sum / n;
+}
+
+test('grade organizada: vizinhas são mais parecidas que num embaralhamento aleatório', () => {
+  const rng = seeded(11);
+  for (let r = 0; r < ROUNDS.length; r++) {
+    let arranged = 0, random = 0;
+    for (let k = 0; k < 10; k++) {
+      const round = generateRound(r, rng, []);
+      arranged += neighborAvg(round.options);
+      const shuffled = round.options.slice().sort(() => rng() - 0.5);
+      random += neighborAvg(shuffled);
+    }
+    assert.ok(arranged < random * 0.75, `rodada ${r + 1}: ${arranged / 10} vs ${random / 10}`);
+  }
+});
+
+test('posição da resposta continua imprevisível', () => {
+  const rng = seeded(5);
+  const counts = new Array(36).fill(0);
+  for (let k = 0; k < 360; k++) counts[generateRound(k % 5, rng, []).answerIndex]++;
+  const used = counts.filter((c) => c > 0).length;
+  assert.ok(used >= 32, `apenas ${used} posições usadas`);
+  assert.ok(Math.max(...counts) < 360 * 0.12, `concentração: ${Math.max(...counts)}`);
+});

@@ -11,7 +11,8 @@
   var REVEAL_MS = 1300;
   var BEST_KEY = 'matiz.best';
   var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  var VIEW_MS = reduceMotion ? 0 : 240;
+  var VIEW_MS = reduceMotion ? 0 : 280;
+  var RING = 2 * Math.PI * 26; // circunferência do anel do cronômetro
 
   function $(id) { return document.getElementById(id); }
 
@@ -84,6 +85,7 @@
         next.hidden = false;
         void next.offsetWidth; // força reflow para a transição de entrada
       }
+      document.body.dataset.view = next.id.replace('view-', '');
       next.classList.add('is-active');
       shownTimer = setTimeout(function () { if (onShown) onShown(); }, VIEW_MS);
     }, leaving.length ? VIEW_MS * 0.6 : 0);
@@ -92,9 +94,10 @@
   function updateStatus() {
     var playing = game.phase !== 'idle' && game.phase !== 'final';
     el.status.hidden = !playing;
+    $('btn-restart').hidden = !playing;
     if (!playing) return;
     el.statusRound.textContent = game.round.number + '/' + ColorGame.TOTAL_ROUNDS;
-    el.statusTotal.textContent = game.total + ' pts';
+    el.statusTotal.textContent = String(game.total);
   }
 
   /* ---------- Memorização ---------- */
@@ -102,7 +105,8 @@
   function renderMemorize() {
     el.memoSwatch.style.background = game.round.target.hex;
     el.timerNum.textContent = String(ColorGame.MEMORIZE_MS / 1000);
-    el.timerFill.style.transform = 'scaleX(1)';
+    el.timerFill.style.strokeDashoffset = String(RING); // anel vazio; fecha ao longo dos 5 s
+    el.status.classList.add('is-timing');
   }
 
   function tickCountdown() {
@@ -111,7 +115,7 @@
       if (game.phase !== 'memorize') return;
       var rem = game.remaining();
       el.timerNum.textContent = String(Math.ceil(rem / 1000));
-      el.timerFill.style.transform = 'scaleX(' + (rem / ColorGame.MEMORIZE_MS) + ')';
+      el.timerFill.style.strokeDashoffset = String(RING * rem / ColorGame.MEMORIZE_MS);
       rafId = requestAnimationFrame(frame);
     }
     frame();
@@ -127,7 +131,6 @@
       b.className = 'cell';
       b.dataset.index = String(i);
       b.style.background = c.hex;
-      b.style.setProperty('--mark', c.lab.L > 62 ? '#111' : '#fff');
       b.setAttribute('aria-label', 'Opção ' + (i + 1) + ' de ' + ColorGame.GRID_SIZE);
       frag.appendChild(b);
     });
@@ -164,10 +167,12 @@
     el.resTargetHex.textContent = r.target.hex;
     el.resPickedHex.textContent = r.picked.hex;
     el.resFeedback.textContent = r.feedback;
+    el.resFeedback.className = 'tier-' + r.tier;
+    $('res-round').textContent = 'Rodada ' + r.round + ' de ' + ColorGame.TOTAL_ROUNDS;
     el.resScore.textContent = '+' + r.score;
-    el.resPrecision.textContent = fmt(r.precision, 0) + '%';
+    el.resPrecision.innerHTML = fmt(r.precision, 0) + '<small>%</small>';
     el.resDelta.textContent = fmt(r.deltaE, 1);
-    el.btnNext.textContent = r.round >= ColorGame.TOTAL_ROUNDS ? 'Ver resultado' : 'Próxima rodada';
+    $('btn-next-label').textContent = r.round >= ColorGame.TOTAL_ROUNDS ? 'Ver resultado' : 'Próxima rodada';
   }
 
   function renderFinal() {
@@ -178,8 +183,8 @@
 
     el.finalTotal.textContent = String(s.total);
     el.finalRank.textContent = s.rank;
-    el.finalPrecision.textContent = fmt(s.averagePrecision, 0) + '%';
-    el.finalBest.textContent = isRecord ? 'Novo recorde' : 'Recorde ' + best;
+    el.finalPrecision.innerHTML = fmt(s.averagePrecision, 0) + '<small>%</small>';
+    el.finalBest.textContent = isRecord ? s.total + ' ★' : String(best);
 
     var frag = document.createDocumentFragment();
     s.rounds.forEach(function (r) {
@@ -196,7 +201,7 @@
         pair.appendChild(i);
       });
       var label = document.createElement('span');
-      label.className = 'label';
+      label.className = 'label tier-' + r.tier;
       label.textContent = r.feedback;
       var pts = document.createElement('span');
       pts.className = 'pts';
@@ -226,7 +231,8 @@
       case 'guess':
         cancelAnimationFrame(rafId);
         el.timerNum.textContent = '0';
-        el.timerFill.style.transform = 'scaleX(0)';
+        el.timerFill.style.strokeDashoffset = '0';
+        el.status.classList.remove('is-timing');
         el.memoSwatch.style.background = 'transparent'; // remove a referência por completo
         renderGrid();
         showView(views.guess);
@@ -249,7 +255,7 @@
 
   var best = readBest();
   if (best > 0) {
-    el.introBest.textContent = 'Seu recorde: ' + best + ' / 500';
+    el.introBest.innerHTML = 'Seu recorde: <b>' + best + '</b> / 500';
     el.introBest.hidden = false;
   }
   views.intro.classList.add('is-active');

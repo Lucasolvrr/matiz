@@ -3,88 +3,163 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta name="theme-color" content="#ffffff">
+  <meta name="theme-color" content="#FFF8F1">
   <meta name="color-scheme" content="light">
   <title>Matiz — memória de cor</title>
   <meta name="description" content="Memorize uma cor por 5 segundos e encontre-a entre 36 tons parecidos.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
 </head>
-<body>
+<body data-view="intro">
   <header class="top">
-    <span class="brand" aria-label="Matiz"><i class="brand-mark" aria-hidden="true"></i>matiz</span>
-    <div class="status" id="status" hidden>
-      <span id="status-round">1/5</span>
-      <span class="status-sep" aria-hidden="true"></span>
-      <span id="status-total">0 pts</span>
-      <button type="button" class="link" id="btn-restart">Reiniciar</button>
-    </div>
+    <span class="brand" aria-label="Matiz">
+      <svg class="brand-icon" viewBox="0 0 40 40" aria-hidden="true">
+        <circle cx="20" cy="22" r="17" fill="#4A1029"/>
+        <circle cx="20" cy="20" r="17" fill="#F0606F" stroke="#4A1029" stroke-width="2"/>
+        <circle cx="20" cy="20" r="10" fill="#FFF4EA" stroke="#4A1029" stroke-width="2"/>
+        <path d="M20 20 L20 11.5 A8.5 8.5 0 0 1 27.4 24.2 Z" fill="#F6A5C0"/>
+        <path d="M20 20 L27.4 24.2 A8.5 8.5 0 0 1 12.6 24.2 Z" fill="#FFD27A"/>
+        <path d="M20 20 L12.6 24.2 A8.5 8.5 0 0 1 20 11.5 Z" fill="#BFE6D2"/>
+      </svg>
+      <span class="brand-name">matiz</span>
+    </span>
+    <button type="button" class="btn btn-ghost btn-sm" id="btn-restart" hidden>
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.5 12a7.5 7.5 0 1 0 2.2-5.3M4.5 4.5v4.5H9" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      Reiniciar
+    </button>
   </header>
+
+  <!-- Cápsula de status: rodada · anel do cronômetro · pontos -->
+  <div class="hud">
+    <div class="capsule" id="status" hidden>
+      <div class="capsule-side">
+        <b id="status-round">1/5</b>
+        <span>Rodada</span>
+      </div>
+      <div class="capsule-core" id="capsule-core">
+        <svg class="ring" viewBox="0 0 64 64" aria-hidden="true">
+          <circle class="ring-track" cx="32" cy="32" r="26"/>
+          <circle class="ring-fill" id="timer-fill" cx="32" cy="32" r="26"/>
+        </svg>
+        <span class="core-num" id="timer-num" aria-live="off">5</span>
+        <svg class="core-icon" viewBox="0 0 40 40" aria-hidden="true">
+          <circle cx="20" cy="20" r="11" fill="#FFF4EA" stroke="#4A1029" stroke-width="2"/>
+          <path d="M20 20 L20 11 A9 9 0 0 1 27.8 24.5 Z" fill="#F6A5C0"/>
+          <path d="M20 20 L27.8 24.5 A9 9 0 0 1 12.2 24.5 Z" fill="#FFD27A"/>
+          <path d="M20 20 L12.2 24.5 A9 9 0 0 1 20 11 Z" fill="#BFE6D2"/>
+        </svg>
+      </div>
+      <div class="capsule-side">
+        <b id="status-total">0</b>
+        <span>Pontos</span>
+      </div>
+    </div>
+  </div>
 
   <main class="stage">
     <!-- Tela inicial -->
     <section class="view view-intro" id="view-intro" aria-labelledby="intro-title">
-      <div class="intro-mark" aria-hidden="true">
-        <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+      <div class="intro-copy">
+        <span class="tag">Um pequeno experimento de percepção</span>
+        <h1 id="intro-title">Quão bem você lembra de uma cor?</h1>
+        <p class="lead">Uma cor aparece por cinco segundos. Depois, ela se esconde entre 36 tons quase idênticos. Seu trabalho é encontrá-la.</p>
+        <div class="intro-actions">
+          <button type="button" class="btn btn-primary" id="btn-start">Começar jogo <span class="arrow" aria-hidden="true">→</span></button>
+          <p class="best" id="intro-best" hidden></p>
+        </div>
       </div>
-      <h1 id="intro-title">matiz</h1>
-      <p class="lead">Um pequeno experimento de memória cromática.</p>
-      <ol class="steps">
-        <li><b>5 s</b> para memorizar uma cor.</li>
-        <li><b>36</b> tons parecidos. Uma única escolha.</li>
-        <li><b>5</b> rodadas, cada uma mais difícil.</li>
-      </ol>
-      <button type="button" class="btn" id="btn-start">Começar jogo</button>
-      <p class="best" id="intro-best" hidden></p>
+
+      <div class="intro-art">
+        <svg class="art-lines" viewBox="0 0 520 340" aria-hidden="true">
+          <path d="M196 120 C 236 70, 250 62, 300 62"/>
+          <path class="dash" d="M300 62 L 330 62"/>
+          <path d="M214 170 L 300 170"/>
+          <path d="M196 220 C 236 270, 250 278, 300 278"/>
+          <path class="dash" d="M300 278 L 330 278"/>
+        </svg>
+        <div class="art-hub" aria-hidden="true">
+          <svg viewBox="0 0 160 160">
+            <circle cx="80" cy="85" r="64" fill="#4A1029"/>
+            <circle cx="80" cy="80" r="64" fill="#FFF4EA" stroke="#4A1029" stroke-width="3"/>
+            <path transform="translate(2.9 -0.8)" d="M80 80 L80 26 A54 54 0 0 1 107 126.77 Z" fill="#F6A5C0" stroke="#4A1029" stroke-width="3" stroke-linejoin="round"/>
+            <path transform="translate(-1.3 2.7)" d="M80 80 L107 126.77 A54 54 0 0 1 26.82 89.38 Z" fill="#FFD27A" stroke="#4A1029" stroke-width="3" stroke-linejoin="round"/>
+            <path transform="translate(-2.3 -1.9)" d="M80 80 L26.82 89.38 A54 54 0 0 1 80 26 Z" fill="#BFE6D2" stroke="#4A1029" stroke-width="3" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <ul class="art-pills">
+          <li><i style="--c:#F6A5C0"><b>5s</b></i><span><strong>Cinco segundos</strong><small>para memorizar</small></span></li>
+          <li><i style="--c:#FFD27A"><b>36</b></i><span><strong>Tons parecidos</strong><small>uma única escolha</small></span></li>
+          <li><i style="--c:#BFE6D2"><b>5</b></i><span><strong>Rodadas</strong><small>cada vez mais difícil</small></span></li>
+        </ul>
+        <span class="float-tile ft-1" aria-hidden="true"><i style="--c:#F6A5C0"></i></span>
+        <span class="float-tile ft-2" aria-hidden="true"><i style="--c:#FDC9A8"></i></span>
+        <span class="float-tile ft-3" aria-hidden="true"><i style="--c:#CDE4F5"></i></span>
+      </div>
     </section>
 
     <!-- Memorização -->
-    <section class="view view-memorize" id="view-memorize" hidden aria-live="polite">
-      <p class="eyebrow">Memorize esta cor</p>
-      <div class="swatch" id="memo-swatch" role="img" aria-label="Cor para memorizar"></div>
-      <div class="timer">
-        <div class="timer-bar"><i id="timer-fill"></i></div>
-        <span class="timer-num" id="timer-num">5</span>
+    <section class="view view-game view-memorize" id="view-memorize" hidden>
+      <div class="game-card">
+        <header class="card-head">
+          <h2>Memorize esta cor</h2>
+          <p>Ela some quando o anel se fechar.</p>
+        </header>
+        <div class="card-body">
+          <div class="swatch" id="memo-swatch" role="img" aria-label="Cor para memorizar"></div>
+        </div>
       </div>
     </section>
 
     <!-- Identificação -->
-    <section class="view view-guess" id="view-guess" hidden>
-      <p class="eyebrow" id="guess-label">Qual era a cor?</p>
-      <div class="grid" id="grid" role="group" aria-labelledby="guess-label"></div>
+    <section class="view view-game view-guess" id="view-guess" hidden>
+      <div class="game-card">
+        <header class="card-head">
+          <h2 id="guess-label">Qual era a cor?</h2>
+          <p>Você tem uma única escolha.</p>
+        </header>
+        <div class="card-body">
+          <div class="grid" id="grid" role="group" aria-labelledby="guess-label"></div>
+        </div>
+      </div>
     </section>
 
     <!-- Resultado da rodada -->
     <section class="view view-result" id="view-result" hidden aria-live="polite">
+      <span class="tag" id="res-round">Rodada 1 de 5</span>
       <div class="compare">
-        <figure>
-          <div class="compare-swatch" id="res-target"></div>
-          <figcaption>Original<span id="res-target-hex"></span></figcaption>
+        <figure class="tile tile-left">
+          <div class="tile-swatch" id="res-target"></div>
+          <figcaption><b>Original</b><span id="res-target-hex"></span></figcaption>
         </figure>
-        <figure>
-          <div class="compare-swatch" id="res-picked"></div>
-          <figcaption>Sua escolha<span id="res-picked-hex"></span></figcaption>
+        <figure class="tile tile-right">
+          <div class="tile-swatch" id="res-picked"></div>
+          <figcaption><b>Sua escolha</b><span id="res-picked-hex"></span></figcaption>
         </figure>
       </div>
-      <h2 class="verdict" id="res-feedback"></h2>
-      <dl class="metrics">
+      <h2 class="verdict"><span id="res-feedback"></span></h2>
+      <dl class="stats">
         <div><dt>Pontos</dt><dd id="res-score"></dd></div>
         <div><dt>Precisão</dt><dd id="res-precision"></dd></div>
         <div><dt>ΔE00</dt><dd id="res-delta"></dd></div>
       </dl>
-      <button type="button" class="btn" id="btn-next">Próxima rodada</button>
+      <button type="button" class="btn btn-primary" id="btn-next"><span id="btn-next-label">Próxima rodada</span> <span class="arrow" aria-hidden="true">→</span></button>
     </section>
 
     <!-- Resultado final -->
     <section class="view view-final" id="view-final" hidden aria-labelledby="final-rank">
-      <p class="eyebrow">Resultado</p>
+      <span class="tag">Resultado final</span>
       <p class="total"><span id="final-total">0</span><small>/500</small></p>
       <h2 class="rank" id="final-rank"></h2>
-      <p class="final-meta">Precisão média <b id="final-precision"></b><span id="final-best"></span></p>
-      <ol class="rounds" id="final-rounds"></ol>
-      <button type="button" class="btn" id="btn-again">Jogar novamente</button>
+      <div class="summary">
+        <dl class="stats stats-2">
+          <div><dt>Precisão média</dt><dd id="final-precision"></dd></div>
+          <div><dt>Recorde</dt><dd id="final-best"></dd></div>
+        </dl>
+        <ol class="rounds" id="final-rounds"></ol>
+      </div>
+      <button type="button" class="btn btn-primary" id="btn-again">Jogar novamente <span class="arrow" aria-hidden="true">↻</span></button>
     </section>
   </main>
 

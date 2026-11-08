@@ -29,11 +29,11 @@
   ];
 
   var FEEDBACK = [
-    { min: 100, text: 'COR PERFEITA!' },
-    { min: 90, text: 'OLHO DE ÁGUIA!' },
-    { min: 75, text: 'MUITO BOM!' },
-    { min: 50, text: 'BOM!' },
-    { min: 0, text: 'OLHO RUIM!' }
+    { min: 100, text: 'COR PERFEITA!', tier: 'perfect' },
+    { min: 90, text: 'OLHO DE ÁGUIA!', tier: 'eagle' },
+    { min: 75, text: 'MUITO BOM!', tier: 'great' },
+    { min: 50, text: 'BOM!', tier: 'good' },
+    { min: 0, text: 'OLHO RUIM!', tier: 'bad' }
   ];
 
   var RANKS = [
@@ -44,9 +44,13 @@
     { min: 0, text: 'Treine o olhar e tente de novo' }
   ];
 
+  function pickEntry(table, value) {
+    for (var i = 0; i < table.length; i++) if (value >= table[i].min) return table[i];
+    return table[table.length - 1];
+  }
+
   function pick(table, value) {
-    for (var i = 0; i < table.length; i++) if (value >= table[i].min) return table[i].text;
-    return table[table.length - 1].text;
+    return pickEntry(table, value).text;
   }
 
   /**
@@ -179,12 +183,96 @@
     return list;
   }
 
+  /**
+   * Distância usada para organizar a grade. Prioriza luminosidade e
+   * saturação (croma); o matiz pesa menos. Assim, tons de brilho e
+   * intensidade parecidos ficam lado a lado e a resposta se camufla.
+   */
+  function layoutDistance(a, b) {
+    var dL = a.lch.L - b.lch.L;
+    var dC = a.lch.C - b.lch.C;
+    var dh = Math.abs(a.lch.h - b.lch.h) % 360;
+    if (dh > 180) dh = 360 - dh;
+    var dH = 2 * Math.sqrt(a.lch.C * b.lch.C) * Math.sin((dh / 2) * Math.PI / 180);
+    return Math.sqrt(dL * dL + dC * dC + 0.5 * dH * dH);
+  }
+
+  /**
+   * Arranja as cores na grade 6×6 de forma que vizinhas (horizontal e
+   * vertical) sejam parecidas. A cor `pinned` (a resposta) é fixada antes
+   * numa posição sorteada uniformemente; as demais partem de uma ordem
+   * aleatória e são reorganizadas por recozimento simulado, minimizando a
+   * soma das distâncias entre vizinhas. Sem a fixação, a resposta — que é o
+   * "centro" do conjunto — iria parar quase sempre no meio da grade.
+   */
+  function arrangeGrid(colors, rng, pinned) {
+    var n = colors.length;
+    var side = Math.round(Math.sqrt(n));
+    var items = colors.map(function (c) {
+      return { color: c, lch: CM.labToLch(c.lab) };
+    });
+
+    var dist = [];
+    for (var i = 0; i < n; i++) {
+      dist.push(new Float64Array(n));
+      for (var j = 0; j < i; j++) {
+        dist[i][j] = dist[j][i] = layoutDistance(items[i], items[j]);
+      }
+    }
+
+    var neighbors = [];
+    for (var p = 0; p < n; p++) {
+      var r = Math.floor(p / side), col = p % side, list = [];
+      if (r > 0) list.push(p - side);
+      if (r < side - 1) list.push(p + side);
+      if (col > 0) list.push(p - 1);
+      if (col < side - 1) list.push(p + 1);
+      neighbors.push(list);
+    }
+
+    // slot[p] = índice da cor na posição p
+    var slot = shuffle(colors.map(function (_, k) { return k; }), rng);
+    var pinnedIdx = colors.indexOf(pinned);
+    var pinPos = Math.floor(rng() * n);
+    var cur = slot.indexOf(pinnedIdx);
+    slot[cur] = slot[pinPos];
+    slot[pinPos] = pinnedIdx;
+
+    // Vizinhas imediatas da resposta pesam mais: as alternativas mais
+    // parecidas com ela tendem a ficar encostadas nela (camuflagem).
+    var PIN_WEIGHT = 4;
+    function localCost(p) {
+      var s = 0, nb = neighbors[p];
+      for (var k = 0; k < nb.length; k++) {
+        var w = (p === pinPos || nb[k] === pinPos) ? PIN_WEIGHT : 1;
+        s += w * dist[slot[p]][slot[nb[k]]];
+      }
+      return s;
+    }
+
+    var iterations = 9000;
+    var temp = 6;
+    var cooling = Math.pow(0.02 / temp, 1 / iterations);
+    for (var it = 0; it < iterations; it++, temp *= cooling) {
+      var a = Math.floor(rng() * n);
+      var b = Math.floor(rng() * n);
+      if (a === b || a === pinPos || b === pinPos) continue;
+      var before = localCost(a) + localCost(b);
+      var t = slot[a]; slot[a] = slot[b]; slot[b] = t;
+      var delta = localCost(a) + localCost(b) - before;
+      if (delta > 0 && rng() >= Math.exp(-delta / temp)) {
+        t = slot[a]; slot[a] = slot[b]; slot[b] = t; // desfaz
+      }
+    }
+
+    return slot.map(function (k) { return colors[k]; });
+  }
+
   function generateRound(index, rng, usedHues) {
     var cfg = ROUNDS[index];
     var target = randomTarget(rng, usedHues || []);
-    var options = shuffle(generateAlternatives(target, cfg, rng), rng);
-    var answerIndex = Math.floor(rng() * GRID_SIZE);
-    options.splice(answerIndex, 0, target);
+    var options = arrangeGrid(generateAlternatives(target, cfg, rng).concat([target]), rng, target);
+    var answerIndex = options.indexOf(target);
     return {
       number: index + 1,
       config: cfg,
@@ -296,7 +384,8 @@
       deltaE: deltaE,
       precision: precisionFor(deltaE),
       score: score,
-      feedback: pick(FEEDBACK, score)
+      feedback: pick(FEEDBACK, score),
+      tier: pickEntry(FEEDBACK, score).tier
     };
     this.results.push(result);
     this.total += score;
