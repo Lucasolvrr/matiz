@@ -2,6 +2,8 @@
 
 Jogo de memória cromática: memorize uma cor por 5 segundos e encontre-a entre 36 tons parecidos. 5 rodadas, até 500 pontos.
 
+**Jogar:** https://lucasolvrr.github.io/matiz/
+
 ## Rodar
 
 Abra `index.html` no navegador. Não há build nem dependências.
