@@ -882,8 +882,8 @@ body[data-tier="bad"] .stamp { rotate: 3deg; }
   margin: 0;
 }
 .hero-kicker {
-  font-family: var(--font-display);
-  font-weight: 800;
+  font-family: var(--font-body);
+  font-weight: 500;
   font-size: clamp(1.125rem, 2vw, 1.875rem);
   line-height: 1.15;
   letter-spacing: .01em;
@@ -1059,3 +1059,8 @@ body[data-tier="bad"] .stamp { rotate: 3deg; }
   .btn .btn__arrow { display: none; }
   .btn:hover .btn__text, .btn:focus-visible .btn__text, .btn.is-hover .btn__text { transform: none; }
 }
+
+/* Tela final: a faixa intermediária (250–399) usa a primária escura no lugar do amarelo
+   (placar, moldura e slot do botão). As etiquetas por rodada mantêm a cor de cada nível. */
+body[data-view="final"][data-tier="good"] { --tier: var(--primary-dark); }
+body[data-view="final"] .ranking li[data-tier="good"] { --tier: var(--near); }

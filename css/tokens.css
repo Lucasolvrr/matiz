@@ -38,6 +38,7 @@
 
   /* Cor primária: barra de tempo e slot revelado no hover dos botões */
   --primary: #FF634F;
+  --primary-dark: #E93820; /* hsl(7, 82%, 52%) — primária mais escura */
 
   /* Feedback: acerto, perto, erro */
   --hit: #4FC484;
