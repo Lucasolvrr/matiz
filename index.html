@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#ffffff">
+  <meta name="color-scheme" content="light">
+  <title>Matiz — memória de cor</title>
+  <meta name="description" content="Memorize uma cor por 5 segundos e encontre-a entre 36 tons parecidos.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="top">
+    <span class="brand" aria-label="Matiz"><i class="brand-mark" aria-hidden="true"></i>matiz</span>
+    <div class="status" id="status" hidden>
+      <span id="status-round">1/5</span>
+      <span class="status-sep" aria-hidden="true"></span>
+      <span id="status-total">0 pts</span>
+      <button type="button" class="link" id="btn-restart">Reiniciar</button>
+    </div>
+  </header>
+
+  <main class="stage">
+    <!-- Tela inicial -->
+    <section class="view view-intro" id="view-intro" aria-labelledby="intro-title">
+      <div class="intro-mark" aria-hidden="true">
+        <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+      </div>
+      <h1 id="intro-title">matiz</h1>
+      <p class="lead">Um pequeno experimento de memória cromática.</p>
+      <ol class="steps">
+        <li><b>5 s</b> para memorizar uma cor.</li>
+        <li><b>36</b> tons parecidos. Uma única escolha.</li>
+        <li><b>5</b> rodadas, cada uma mais difícil.</li>
+      </ol>
+      <button type="button" class="btn" id="btn-start">Começar jogo</button>
+      <p class="best" id="intro-best" hidden></p>
+    </section>
+
+    <!-- Memorização -->
+    <section class="view view-memorize" id="view-memorize" hidden aria-live="polite">
+      <p class="eyebrow">Memorize esta cor</p>
+      <div class="swatch" id="memo-swatch" role="img" aria-label="Cor para memorizar"></div>
+      <div class="timer">
+        <div class="timer-bar"><i id="timer-fill"></i></div>
+        <span class="timer-num" id="timer-num">5</span>
+      </div>
+    </section>
+
+    <!-- Identificação -->
+    <section class="view view-guess" id="view-guess" hidden>
+      <p class="eyebrow" id="guess-label">Qual era a cor?</p>
+      <div class="grid" id="grid" role="group" aria-labelledby="guess-label"></div>
+    </section>
+
+    <!-- Resultado da rodada -->
+    <section class="view view-result" id="view-result" hidden aria-live="polite">
+      <div class="compare">
+        <figure>
+          <div class="compare-swatch" id="res-target"></div>
+          <figcaption>Original<span id="res-target-hex"></span></figcaption>
+        </figure>
+        <figure>
+          <div class="compare-swatch" id="res-picked"></div>
+          <figcaption>Sua escolha<span id="res-picked-hex"></span></figcaption>
+        </figure>
+      </div>
+      <h2 class="verdict" id="res-feedback"></h2>
+      <dl class="metrics">
+        <div><dt>Pontos</dt><dd id="res-score"></dd></div>
+        <div><dt>Precisão</dt><dd id="res-precision"></dd></div>
+        <div><dt>ΔE00</dt><dd id="res-delta"></dd></div>
+      </dl>
+      <button type="button" class="btn" id="btn-next">Próxima rodada</button>
+    </section>
+
+    <!-- Resultado final -->
+    <section class="view view-final" id="view-final" hidden aria-labelledby="final-rank">
+      <p class="eyebrow">Resultado</p>
+      <p class="total"><span id="final-total">0</span><small>/500</small></p>
+      <h2 class="rank" id="final-rank"></h2>
+      <p class="final-meta">Precisão média <b id="final-precision"></b><span id="final-best"></span></p>
+      <ol class="rounds" id="final-rounds"></ol>
+      <button type="button" class="btn" id="btn-again">Jogar novamente</button>
+    </section>
+  </main>
+
+  <script src="js/color.js"></script>
+  <script src="js/game.js"></script>
+  <script src="js/ui.js"></script>
+</body>
+</html>
