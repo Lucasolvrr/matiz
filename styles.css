@@ -193,7 +193,7 @@ ol, ul { list-style: none; }
   justify-content: space-between;
   /* o texto desliza var(--arrow-shift) no hover: o espaço até o ícone já
      reserva esse deslocamento, então texto e ícone nunca se encostam */
-  gap: calc(var(--s-4) + var(--arrow-shift));
+  gap: var(--s-4);
   min-width: 0;
   padding: 0 var(--s-5);
   background: var(--surface);
@@ -787,7 +787,6 @@ ol, ul { list-style: none; }
 [data-tier="good"] { --tier: var(--near); }
 [data-tier="bad"] { --tier: var(--miss); }
 
-body[data-view="memorize"] body[data-view="memorize"] 
 /* hero: "COR?" troca de cor em degraus, sem gradiente */
 .hero .t-extrude { animation: cor-cycle 8.4s steps(1) infinite; }
 @keyframes cor-cycle {
@@ -1004,3 +1003,59 @@ body[data-tier="bad"] .stamp { rotate: 3deg; }
 /* Logo: raposa em pixel art (img/matiz-logo.svg) */
 .logo-img { display: block; height: 40px; width: auto; flex: none; }
 @media (max-width: 767px) { .logo-img { height: 30px; } }
+
+/* folga extra para o texto deslizar só onde existe hover (mouse); no toque
+   o texto fica parado e a folga empurrava o ícone para fora do botão */
+@media (hover: hover) {
+  .btn__panel { gap: calc(var(--s-4) + var(--arrow-shift)); }
+}
+.btn__icon { flex: none; }
+.btn__text { min-width: 0; overflow: hidden; text-overflow: ellipsis; }
+
+/* ==========================================================================
+   Tela final compacta: ranking das cores na primeira dobra (< 800px)
+   ========================================================================== */
+.view-final .modal-copy > .pair { display: none; }
+.view-final .modal-copy { gap: var(--s-4); }
+.view-final .total { font-size: clamp(4rem, 7vw, 6.5rem); }
+.view-final .rank { font-size: clamp(1.25rem, 1.8vw, 1.75rem); }
+.view-final .numbered > div { padding: var(--s-3); gap: var(--s-1); }
+.view-final .numbered dd { margin-top: var(--s-1); font-size: clamp(1.5rem, 2.2vw, 2.25rem); }
+.view-final .numbered .meta { display: none; }
+.view-final .btn-xl { min-height: var(--cell-sm); }
+.view-final .btn-xl .btn__icon { width: 26px; height: 26px; }
+.view-final .ranking li { min-height: 56px; }
+
+@media (max-width: 767px) {
+  /* ordem: placar → classificação → números → ranking → jogar novamente */
+  .view-final .modal { gap: 0; }
+  .view-final .modal-copy { display: contents; }
+  .view-final .total { order: 1; margin: var(--s-4) var(--s-4) 0; display: flex; align-items: baseline; font-size: 4rem; }
+  .view-final .rank { order: 2; margin: var(--s-2) var(--s-4) 0; font-size: 1.25rem; max-width: none; }
+  .view-final .numbered { order: 3; margin: var(--s-3) var(--s-4) 0; width: auto; }
+  .view-final .numbered > div { padding: var(--s-2) var(--s-3); gap: 2px; }
+  .view-final .numbered dd { margin: 0; font-size: 1.5rem; }
+  .view-final .numbered dt { font-size: .75rem; white-space: nowrap; overflow: visible; }
+  .view-final .ranking { order: 4; border-top: 0; padding: var(--s-3) var(--s-4) 0; }
+  .view-final .ranking li { min-height: 46px; }
+  .view-final .ranking .stat { font-size: 1.375rem; }
+  .view-final .modal-copy .btn { order: 5; margin: var(--s-3) var(--s-4) var(--s-4); width: auto; }
+}
+
+/* botões no celular: rótulo inteiro, sem reticências */
+@media (max-width: 767px) {
+  .btn { letter-spacing: .06em; }
+  .btn-xl .btn__panel, .view-final .btn .btn__panel { padding: 0 var(--s-4); gap: var(--s-3); }
+  .btn__text { overflow: visible; }
+}
+@media (max-width: 374px) {
+  .btn { font-size: .8125rem; letter-spacing: .04em; }
+}
+
+/* telas estreitas: o botão levanta no hover, mas sem seta nem deslize do texto
+   (não há largura para o texto andar sem encostar no ícone) */
+@media (max-width: 767px) {
+  .btn__panel { gap: var(--s-3); }
+  .btn .btn__arrow { display: none; }
+  .btn:hover .btn__text, .btn:focus-visible .btn__text, .btn.is-hover .btn__text { transform: none; }
+}

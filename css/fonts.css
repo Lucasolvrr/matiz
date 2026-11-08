@@ -8,3 +8,11 @@
 @font-face { font-family: "DM Sans Local"; src: url("../fonts/dmsans-extralight.woff2") format("woff2"); font-weight: 200; font-display: swap; }
 @font-face { font-family: "DM Sans Local"; src: url("../fonts/dmsans-regular.woff2") format("woff2"); font-weight: 400; font-display: swap; }
 @font-face { font-family: "DM Sans Local"; src: url("../fonts/dmsans-medium.woff2") format("woff2"); font-weight: 500; font-display: swap; }
+
+/* "Matiz Display": família composta.
+   500/700 (rótulos, botões, eyebrows) → Archivo semi-expandida, legível em tamanho pequeno.
+   800/900 (títulos, números, carimbos) → Jersey 15 (OFL), pixelada, combina com a marca.
+   size-adjust 123% iguala a altura das maiúsculas (Jersey 0,556em vs Archivo 0,686em). */
+@font-face { font-family: "Matiz Display"; src: url("../fonts/archivo-semiexp-medium.woff2") format("woff2"); font-weight: 500; font-display: swap; }
+@font-face { font-family: "Matiz Display"; src: url("../fonts/archivo-semiexp-bold.woff2") format("woff2"); font-weight: 700; font-display: swap; }
+@font-face { font-family: "Matiz Display"; src: url("../fonts/jersey15.woff2") format("woff2"); font-weight: 800 900; font-display: swap; size-adjust: 123%; }
