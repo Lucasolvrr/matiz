@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Matiz — style guide</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@100..125,400..900&family=DM+Sans:opsz,wght@9..40,200..500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/tokens.css">
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    /* Só a moldura desta página interna; os componentes vêm de styles.css. */
+    .sg-section { border: var(--stroke) solid var(--border); margin-top: calc(var(--stroke) * -1); padding: var(--cell-pad); background: var(--surface); color: var(--text); }
+    .sg-section > .eyebrow { display: block; margin-bottom: var(--s-5); }
+    .sg-row { display: flex; flex-wrap: wrap; gap: var(--s-6) var(--s-5); align-items: flex-end; }
+    .sg-item { display: flex; flex-direction: column; gap: var(--s-3); }
+    .sg-item > .meta { color: var(--text-muted); }
+    .sg-hud { display: flex; }
+    .sg-card { width: 220px; }
+    .sg-stamp { position: relative; height: 140px; width: 420px; max-width: 100%; border: var(--stroke) solid var(--border); }
+    .sg-stamp .stamp { visibility: visible; font-size: 3rem; }
+    .sg-progress { width: 360px; }
+  </style>
+</head>
+<body data-theme="light">
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <defs>
+      <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M4 12h16M13 5l7 7-7 7"/></symbol>
+      <symbol id="i-rocket" viewBox="0 0 24 24"><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"/><path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/><path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"/></symbol>
+      <symbol id="i-restart" viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></symbol>
+      <symbol id="i-book" viewBox="0 0 24 24"><path d="M2 4h6a4 4 0 0 1 4 4v13a3 3 0 0 0-3-3H2z"/><path d="M22 4h-6a4 4 0 0 0-4 4v13a3 3 0 0 1 3-3h7z"/></symbol>
+      <symbol id="i-star" viewBox="0 0 24 24"><path d="M12 2v20M2 12h20M4.9 4.9l14.2 14.2M19.1 4.9 4.9 19.1"/></symbol>
+    </defs>
+  </svg>
+  <div class="bg-grid" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+
+  <div class="wrap">
+    <header class="top">
+      <a class="btn btn-logo" href="index.html" aria-label="Matiz — voltar ao jogo"><span class="btn__panel"><span class="logo-mark" aria-hidden="true"><i></i><i></i><i></i><i></i></span><span class="logo-word">Matiz</span></span></a>
+      <a class="btn btn-link-cell" href="index.html" style="margin-left:auto;width:calc(100% / var(--cols));text-decoration:none">
+        <span class="btn__panel"><svg class="i btn__arrow" aria-hidden="true"><use href="#i-arrow"/></svg><span class="btn__text">Voltar ao jogo</span><svg class="i btn__icon btn__icon--rocket" aria-hidden="true"><use href="#i-rocket"/></svg></span>
+      </a>
+    </header>
+
+    <section class="sg-section">
+      <p class="pair"><span class="eyebrow">Style</span><span class="pair-amp" aria-hidden="true">&amp;</span><span class="eyebrow">Guide</span></p>
+      <h1 class="display-l" style="text-align:center;margin-top:var(--s-5)">Todos os <span class="t-extrude">estados.</span></h1>
+    </section>
+
+    <section class="sg-section">
+      <span class="eyebrow">01 · Tipografia</span>
+      <p class="display-l">Display L</p>
+      <p class="stat" style="margin-top:var(--s-4)">1/5 · 432</p>
+      <p class="title" style="margin-top:var(--s-4)">Título em DM Sans, sentence case</p>
+      <p class="lead" style="margin-top:var(--s-3)">Lead: uma cor aparece por cinco segundos.</p>
+      <p style="margin-top:var(--s-3);max-width:60ch">Body: texto corrido com no máximo sessenta caracteres por linha e altura de linha generosa.</p>
+      <p style="margin-top:var(--s-3)"><span class="eyebrow">Eyebrow</span> &nbsp; <span class="meta">01 02 03</span></p>
+    </section>
+
+    <section class="sg-section">
+      <span class="eyebrow">02 · Botão secundário (padrão)</span>
+      <div class="sg-row">
+        <div class="sg-item"><span class="meta">Repouso</span><button class="btn"><span class="btn__panel"><svg class="i btn__arrow" aria-hidden="true"><use href="#i-arrow"/></svg><span class="btn__text">Como jogar</span><svg class="i btn__icon btn__icon--book" aria-hidden="true"><use href="#i-book"/></svg></span></button></div>
+        <div class="sg-item"><span class="meta">Hover</span><button class="btn is-hover"><span class="btn__panel"><svg class="i btn__arrow" aria-hidden="true"><use href="#i-arrow"/></svg><span class="btn__text">Como jogar</span><svg class="i btn__icon btn__icon--book" aria-hidden="true"><use href="#i-book"/></svg></span></button></div>
+        <div class="sg-item"><span class="meta">Foco</span><button class="btn is-focus"><span class="btn__panel"><svg class="i btn__arrow" aria-hidden="true"><use href="#i-arrow"/></svg><span class="btn__text">Como jogar</span><svg class="i btn__icon btn__icon--book" aria-hidden="true"><use href="#i-book"/></svg></span></button></div>
+        <div class="sg-item"><span class="meta">Pressionado</span><button class="btn is-active"><span class="btn__panel"><svg class="i btn__arrow" aria-hidden="true"><use href="#i-arrow"/></svg><span class="btn__text">Como jogar</span><svg class="i btn__icon btn__icon--book" aria-hidden="true"><use href="#i-book"/></svg></span></button></div>
+        <div class="sg-item"><span class="meta">Desabilitado</span><button class="btn" disabled><span class="btn__panel"><svg class="i btn__arrow" aria-hidden="true"><use href="#i-arrow"/></svg><span class="btn__text">Como jogar</span><svg class="i btn__icon btn__icon--book" aria-hidden="true"><use href="#i-book"/></svg></span></button></div>
+        <div class="sg-item"><span class="meta">Carregando</span><button class="btn is-loading" style="width:240px"><span class="btn__panel"><svg class="i btn__arrow" aria-hidden="true"><use href="#i-arrow"/></svg><span class="btn__text">Como jogar</span><svg class="i btn__icon btn__icon--book" aria-hidden="true"><use href="#i-book"/></svg></span></button></div>
+      </div>
+    </section>
+
+    <section class="sg-section">
+      <span class="eyebrow">03 · Botão primário xl e ícone</span>
+      <div class="sg-row">
+        <div class="sg-item"><span class="meta">Repouso</span><button class="btn btn-primary btn-xl"><span class="btn__panel"><svg class="i btn__arrow" aria-hidden="true"><use href="#i-arrow"/></svg><span class="btn__text">Começar jogo</span><svg class="i btn__icon btn__icon--rocket" aria-hidden="true"><use href="#i-rocket"/></svg></span></button></div>
+        <div class="sg-item"><span class="meta">Hover</span><button class="btn btn-primary btn-xl is-hover"><span class="btn__panel"><svg class="i btn__arrow" aria-hidden="true"><use href="#i-arrow"/></svg><span class="btn__text">Começar jogo</span><svg class="i btn__icon btn__icon--rocket" aria-hidden="true"><use href="#i-rocket"/></svg></span></button></div>
+        <div class="sg-item"><span class="meta">Ícone</span><button class="btn btn-icon" aria-label="Reiniciar"><span class="btn__panel"><svg class="i btn__icon btn__icon--spin" aria-hidden="true"><use href="#i-restart"/></svg></span></button></div>
+        <div class="sg-item"><span class="meta">Ícone hover</span><button class="btn btn-icon is-hover" aria-label="Reiniciar"><span class="btn__panel"><svg class="i btn__icon btn__icon--spin" aria-hidden="true"><use href="#i-restart"/></svg></span></button></div>
+      </div>
+    </section>
+
+    <section class="sg-section">
+      <span class="eyebrow">04 · HUD</span>
+      <div class="sg-row">
+        <div class="sg-item"><span class="meta">Normal · ganho de pontos</span>
+          <div class="sg-hud">
+            <div class="hud-cell"><span class="eyebrow">Rodada</span><b class="stat">3/5</b></div>
+            <div class="hud-cell"><span class="eyebrow">Pontos</span><b class="stat">184</b><span class="gain is-on">+92</span></div>
+            <div class="hud-cell"><span class="eyebrow">Tempo</span><b class="stat">4</b></div>
+          </div>
+        </div>
+        <div class="sg-item"><span class="meta">Tempo crítico</span>
+          <div class="sg-hud"><div class="hud-cell hud-time is-critical"><span class="eyebrow">Tempo</span><b class="stat">2</b></div></div>
+        </div>
+        <div class="sg-item sg-progress"><span class="meta">Barra segmentada (degraus de 100 ms)</span>
+          <div class="progress"><div class="progress-head"><span class="eyebrow">Tempo</span><span class="meta">3,2 s</span></div><div class="progress-bar"><i style="width:64%"></i></div></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="sg-section">
+      <span class="eyebrow">05 · Grade de cores, revelação e carimbos</span>
+      <div class="sg-row">
+        <div class="sg-item"><span class="meta">Acerto (extrusão)</span><div class="sg-stamp"><p class="stamp is-on t-extrude">Acertou!</p></div></div>
+        <div class="sg-item"><span class="meta">Erro (contorno)</span><div class="sg-stamp"><p class="stamp is-on is-miss">Errou!</p></div></div>
+      </div>
+    </section>
+
+    <section class="sg-section">
+      <span class="eyebrow">06 · Letreiro</span>
+      <div style="position:relative;height:var(--cell)">
+        <div class="marquee" aria-hidden="true" style="left:0;width:100%;bottom:0">
+          <div class="marquee__track">
+            <span>Memorize</span><svg class="star"><use href="#i-star"/></svg><span>Encontre</span><svg class="star"><use href="#i-star"/></svg><span>36 tons</span><svg class="star"><use href="#i-star"/></svg><span>5 segundos</span><svg class="star"><use href="#i-star"/></svg>
+            <span>Memorize</span><svg class="star"><use href="#i-star"/></svg><span>Encontre</span><svg class="star"><use href="#i-star"/></svg><span>36 tons</span><svg class="star"><use href="#i-star"/></svg><span>5 segundos</span><svg class="star"><use href="#i-star"/></svg>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="sg-section" data-theme="dark">
+      <span class="eyebrow">07 · Tema escuro: cards, células numeradas, ranking, primário</span>
+      <div class="sg-row" style="align-items:flex-start">
+        <div class="cards" style="border:0;padding:0;width:440px">
+          <figure class="card"><div class="card-media" style="background:#5B8BD0"></div><figcaption class="card-title">Original</figcaption><span class="card-tag">#5B8BD0</span></figure>
+          <figure class="card"><div class="card-media" style="background:#6E86D9"></div><figcaption class="card-title">Sua escolha</figcaption><span class="card-tag">#6E86D9</span></figure>
+        </div>
+        <div class="sg-item" style="width:420px">
+          <dl class="numbered">
+            <div><span class="meta">01</span><dt>Pontos</dt><dd class="stat">+92</dd></div>
+            <div><span class="meta">02</span><dt>Precisão</dt><dd class="stat">96<small>%</small></dd></div>
+            <div><span class="meta">03</span><dt>ΔE00</dt><dd class="stat">2,1</dd></div>
+          </dl>
+          <button class="btn btn-primary btn-xl is-hover" style="margin-top:var(--s-5)"><span class="btn__panel"><svg class="i btn__arrow" aria-hidden="true"><use href="#i-arrow"/></svg><span class="btn__text">Próxima rodada</span><svg class="i btn__icon btn__icon--arrow" aria-hidden="true"><use href="#i-arrow"/></svg></span></button>
+        </div>
+        <ol class="ranking" style="border:0;padding:0;width:420px">
+          <li><span class="meta">01</span><span class="pair-sw"><i style="background:#C9A0DC"></i><i style="background:#B98ED0"></i></span><span class="eyebrow">Muito bom!</span><span class="stat">81</span></li>
+          <li class="is-top"><span class="meta">02</span><span class="pair-sw"><i style="background:#4FA3A5"></i><i style="background:#4FA3A5"></i></span><span class="eyebrow">Cor perfeita!</span><span class="stat">100</span></li>
+          <li><span class="meta">03</span><span class="pair-sw"><i style="background:#D98F4E"></i><i style="background:#C4683A"></i></span><span class="eyebrow">Olho ruim!</span><span class="stat">12</span></li>
+        </ol>
+      </div>
+    </section>
+  </div>
+</body>
+</html>

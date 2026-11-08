@@ -11,8 +11,9 @@
   var REVEAL_MS = 1300;
   var BEST_KEY = 'matiz.best';
   var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  var VIEW_MS = reduceMotion ? 0 : 280;
-  var RING = 2 * Math.PI * 26; // circunferência do anel do cronômetro
+  var VIEW_MS = reduceMotion ? 0 : 180;
+  var CRITICAL_MS = 2000; // célula de tempo inverte e pisca nos 2 s finais
+  var DARK_VIEWS = { result: true, final: true }; // camadas por cima do jogo
 
   function $(id) { return document.getElementById(id); }
 
@@ -54,6 +55,8 @@
   var token = 0;
   var rafId = 0;
 
+  function pad(n) { return n < 10 ? '0' + n : String(n); }
+
   function fmt(n, digits) {
     return n.toLocaleString('pt-BR', { minimumFractionDigits: digits, maximumFractionDigits: digits });
   }
@@ -85,7 +88,10 @@
         next.hidden = false;
         void next.offsetWidth; // força reflow para a transição de entrada
       }
-      document.body.dataset.view = next.id.replace('view-', '');
+      var name = next.id.replace('view-', '');
+      document.body.dataset.view = name;
+      document.body.dataset.theme = DARK_VIEWS[name] ? 'dark' : 'light';
+      $('btn-howto').hidden = name !== 'intro';
       next.classList.add('is-active');
       shownTimer = setTimeout(function () { if (onShown) onShown(); }, VIEW_MS);
     }, leaving.length ? VIEW_MS * 0.6 : 0);
@@ -97,25 +103,44 @@
     $('btn-restart').hidden = !playing;
     if (!playing) return;
     el.statusRound.textContent = game.round.number + '/' + ColorGame.TOTAL_ROUNDS;
-    el.statusTotal.textContent = String(game.total);
+    if (el.statusTotal.textContent !== String(game.total)) {
+      el.statusTotal.textContent = String(game.total);
+      el.statusTotal.classList.remove('tick');
+      void el.statusTotal.offsetWidth;
+      el.statusTotal.classList.add('tick');
+    }
+  }
+
+  var gainTimer = 0;
+  function showGain(score) {
+    var gain = $('status-gain');
+    gain.textContent = '+' + score;
+    gain.classList.add('is-on');
+    clearTimeout(gainTimer);
+    gainTimer = setTimeout(function () { gain.classList.remove('is-on'); }, 600);
+  }
+
+  /* Barra de tempo: avança em degraus de 100 ms (50 segmentos). */
+  function setTimer(rem) {
+    var steps = Math.ceil(rem / 100);
+    el.timerNum.textContent = String(Math.ceil(rem / 1000));
+    $('timer-meta').textContent = fmt(steps / 10, 1) + ' s';
+    el.timerFill.style.width = (steps / (ColorGame.MEMORIZE_MS / 100) * 100) + '%';
+    $('hud-time').classList.toggle('is-critical', rem > 0 && rem <= CRITICAL_MS);
   }
 
   /* ---------- Memorização ---------- */
 
   function renderMemorize() {
     el.memoSwatch.style.background = game.round.target.hex;
-    el.timerNum.textContent = String(ColorGame.MEMORIZE_MS / 1000);
-    el.timerFill.style.strokeDashoffset = String(RING); // anel vazio; fecha ao longo dos 5 s
-    el.status.classList.add('is-timing');
+    setTimer(ColorGame.MEMORIZE_MS);
   }
 
   function tickCountdown() {
     cancelAnimationFrame(rafId);
     function frame() {
       if (game.phase !== 'memorize') return;
-      var rem = game.remaining();
-      el.timerNum.textContent = String(Math.ceil(rem / 1000));
-      el.timerFill.style.strokeDashoffset = String(RING * rem / ColorGame.MEMORIZE_MS);
+      setTimer(game.remaining());
       rafId = requestAnimationFrame(frame);
     }
     frame();
@@ -136,6 +161,9 @@
     });
     el.grid.className = 'grid';
     el.grid.replaceChildren(frag);
+    var stamp = $('stamp');
+    stamp.className = 'stamp';
+    stamp.textContent = '';
   }
 
   el.grid.addEventListener('click', function (e) {
@@ -150,8 +178,22 @@
     var t = token;
     var cells = el.grid.children;
     el.grid.classList.add('is-locked', 'is-revealed');
-    cells[result.answerIndex].classList.add('is-answer');
+    var answer = cells[result.answerIndex];
+    answer.classList.add('is-answer');
     cells[result.pickedIndex].classList.add('is-picked');
+
+    // ✱ em caixa satélite na resposta certa
+    var star = document.createElement('span');
+    star.className = 'cell-star';
+    star.setAttribute('aria-hidden', 'true');
+    star.innerHTML = '<svg class="star"><use href="#i-star"/></svg>';
+    answer.appendChild(star);
+
+    // carimbo: acerto exato com extrusão; erro só com contorno
+    var stamp = $('stamp');
+    stamp.textContent = result.exact ? 'Acertou!' : 'Errou!';
+    stamp.className = 'stamp is-on ' + (result.exact ? 't-extrude' : 'is-miss');
+    showGain(result.score);
     setTimeout(function () {
       if (t !== token) return;
       renderResult(result);
@@ -166,9 +208,13 @@
     el.resPicked.style.background = r.picked.hex;
     el.resTargetHex.textContent = r.target.hex;
     el.resPickedHex.textContent = r.picked.hex;
-    el.resFeedback.textContent = r.feedback;
-    el.resFeedback.className = 'tier-' + r.tier;
-    $('res-round').textContent = 'Rodada ' + r.round + ' de ' + ColorGame.TOTAL_ROUNDS;
+    // a última palavra do veredito recebe a extrusão (uma por tela)
+    var words = r.feedback.split(' ');
+    var last = document.createElement('span');
+    last.className = 't-extrude';
+    last.textContent = words.pop();
+    el.resFeedback.replaceChildren(document.createTextNode(words.length ? words.join(' ') + ' ' : ''), last);
+    $('res-round').textContent = 'Rodada ' + pad(r.round);
     el.resScore.textContent = '+' + r.score;
     el.resPrecision.innerHTML = fmt(r.precision, 0) + '<small>%</small>';
     el.resDelta.textContent = fmt(r.deltaE, 1);
@@ -184,27 +230,30 @@
     el.finalTotal.textContent = String(s.total);
     el.finalRank.textContent = s.rank;
     el.finalPrecision.innerHTML = fmt(s.averagePrecision, 0) + '<small>%</small>';
-    el.finalBest.textContent = isRecord ? s.total + ' ★' : String(best);
+    el.finalBest.textContent = String(isRecord ? s.total : best);
 
+    var topScore = Math.max.apply(null, s.rounds.map(function (r) { return r.score; }));
+    var topMarked = false;
     var frag = document.createDocumentFragment();
     s.rounds.forEach(function (r) {
       var li = document.createElement('li');
+      if (!topMarked && r.score === topScore) { li.className = 'is-top'; topMarked = true; }
       var n = document.createElement('span');
-      n.className = 'n';
-      n.textContent = r.round + '.';
+      n.className = 'meta';
+      n.textContent = pad(r.round);
       var pair = document.createElement('span');
-      pair.className = 'pair';
-      pair.title = r.target.hex + ' → ' + r.picked.hex;
+      pair.className = 'pair-sw';
+      pair.title = 'Original ' + r.target.hex + ', sua escolha ' + r.picked.hex;
       [r.target.hex, r.picked.hex].forEach(function (hex) {
         var i = document.createElement('i');
         i.style.background = hex;
         pair.appendChild(i);
       });
       var label = document.createElement('span');
-      label.className = 'label tier-' + r.tier;
+      label.className = 'eyebrow';
       label.textContent = r.feedback;
       var pts = document.createElement('span');
-      pts.className = 'pts';
+      pts.className = 'stat';
       pts.textContent = String(r.score);
       li.append(n, pair, label, pts);
       frag.appendChild(li);
@@ -230,9 +279,7 @@
         break;
       case 'guess':
         cancelAnimationFrame(rafId);
-        el.timerNum.textContent = '0';
-        el.timerFill.style.strokeDashoffset = '0';
-        el.status.classList.remove('is-timing');
+        setTimer(0);
         el.memoSwatch.style.background = 'transparent'; // remove a referência por completo
         renderGrid();
         showView(views.guess);
@@ -249,14 +296,33 @@
   $('btn-start').addEventListener('click', function () { game.start(); });
   $('btn-again').addEventListener('click', function () { game.restart(); });
   $('btn-restart').addEventListener('click', function () { game.restart(); });
+  $('btn-howto').addEventListener('click', function () {
+    var rules = $('rules');
+    rules.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
+    rules.focus({ preventScroll: true });
+  });
   el.btnNext.addEventListener('click', function () { game.advance(); });
+
+  /* Logo: volta à tela inicial. A partida em andamento é descartada
+     (game.reset() também cancela o cronômetro de memorização). */
+  $('btn-home').addEventListener('click', function () {
+    token++; // invalida revelações e transições pendentes
+    cancelAnimationFrame(rafId);
+    game.reset();
+    updateStatus();
+    renderBest();
+    showView(views.intro);
+    window.scrollTo({ top: 0, behavior: reduceMotion ? 'auto' : 'smooth' });
+  });
 
   /* ---------- Inicial ---------- */
 
-  var best = readBest();
-  if (best > 0) {
-    el.introBest.innerHTML = 'Seu recorde: <b>' + best + '</b> / 500';
-    el.introBest.hidden = false;
+  function renderBest() {
+    var best = readBest();
+    el.introBest.hidden = best <= 0;
+    if (best > 0) el.introBest.innerHTML = 'Seu recorde: <b>' + best + '</b> / 500';
   }
+
+  renderBest();
   views.intro.classList.add('is-active');
 })();

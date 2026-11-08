@@ -1,0 +1,93 @@
+/* Tokens — única fonte de cores, fontes, espaçamentos, sombras e durações. */
+:root {
+  /* Cores — tema claro (padrão) */
+  --paper: #F7F7F7;
+  --paper-pure: #FFFFFF;
+  --ink: #111111;
+  --ink-soft: #3A3A3A;
+  --ink-muted: #6B6B6B;
+  --line: #E4E4E4;
+  --line-dark: #262626;
+  --accent: none; /* sem acento: o jogo já é todo sobre cor */
+
+  /* Papéis semânticos */
+  --surface: var(--paper);
+  --surface-invert: var(--ink);
+  --text: var(--ink);
+  --text-invert: var(--paper);
+  --text-muted: var(--ink-muted);
+  --border: var(--ink);
+  --grid-line: var(--line);
+  --hard-shadow: var(--ink);
+  --hatch: repeating-linear-gradient(-45deg, transparent 0 7px, var(--grid-line) 7px 8px);
+  --hatch-strong: repeating-linear-gradient(-45deg, transparent 0 6px, var(--ink) 6px 7.5px);
+
+  /* Tipografia */
+  --font-display: "Archivo", "Arial Black", sans-serif;
+  --font-body: "DM Sans", "Helvetica Neue", Arial, sans-serif;
+
+  --fs-display-xl: clamp(3.5rem, 8vw, 8rem);
+  --fs-display-l: clamp(2.75rem, 6vw, 6rem);
+  --fs-stat: clamp(2rem, 3.5vw, 3.5rem);
+  --fs-title: clamp(1.75rem, 2.4vw, 2.75rem);
+  --fs-lead: clamp(1.25rem, 1.8vw, 1.75rem);
+  --fs-body: 1.125rem;
+  --fs-label: 1rem;
+  --fs-eyebrow: .875rem;
+  --fs-meta: .875rem;
+  --fs-marquee: clamp(1.5rem, 2.4vw, 2.25rem);
+
+  /* Espaçamento (base 8) */
+  --s-1: 4px; --s-2: 8px; --s-3: 16px; --s-4: 24px; --s-5: 32px;
+  --s-6: 40px; --s-7: 64px; --s-8: 96px; --s-9: 128px;
+
+  /* Módulo da grade */
+  --cell: 84px;           /* altura dos blocos do topo e dos botões (80–85px) */
+  --cell-sm: 64px;
+  --cell-pad: 40px;
+  --container: min(1880px, 100% - 14vw);
+  --cols: 4;
+
+  /* Bordas e sombras */
+  --stroke: 1px;
+  --frame: 10px;
+  --lift-x: 13px;
+  --lift-y: -13px;
+  --modal-shadow: -12px 16px 0 0 var(--hard-shadow);
+
+  /* Movimento */
+  --ease-snap: cubic-bezier(.2, .9, .1, 1);
+  --dur-instant: 60ms;
+  --dur-fast: 120ms;
+  --dur-base: 180ms;
+  --dur-slow: 320ms;
+  /* Movimento dos botões, medido na referência:
+     painel desliza em 400ms; seta e texto deslizam em 800ms, curva expo-out */
+  --ease-expo: cubic-bezier(.19, 1, .22, 1);
+  --dur-lift: 400ms;
+  --dur-glide: 800ms;
+  --arrow-shift: 32px;
+}
+
+[data-theme="dark"] {
+  --surface: var(--ink);
+  --surface-invert: var(--paper-pure);
+  --text: var(--paper);
+  --text-invert: var(--ink);
+  --text-muted: #9A9A9A;
+  --border: var(--line-dark);
+  --grid-line: var(--line-dark);
+  --hard-shadow: var(--ink-soft);
+}
+
+@media (max-width: 767px) {
+  :root {
+    --cols: 2;
+    --cell: 64px;
+    --cell-pad: 24px;
+    --lift-x: 6px;
+    --lift-y: -6px;
+    --fs-label: .875rem;
+    --modal-shadow: -6px 8px 0 0 var(--hard-shadow);
+  }
+}
