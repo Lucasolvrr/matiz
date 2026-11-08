@@ -36,10 +36,13 @@
   --t-violet: #F3F0FA;
   --t-red: #FBEFED;
 
+  /* Cor primária: barra de tempo e slot revelado no hover dos botões */
+  --primary: #FF634F;
+
   /* Feedback: acerto, perto, erro */
   --hit: #4FC484;
-  --near: #F2C94C;
-  --miss: #EE5D6C;
+  --near: #EEB91B;
+  --miss: #EB3349;
 
   /* Papéis semânticos */
   --surface: var(--paper);

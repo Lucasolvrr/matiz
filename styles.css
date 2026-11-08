@@ -191,7 +191,9 @@ ol, ul { list-style: none; }
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: var(--s-4);
+  /* o texto desliza var(--arrow-shift) no hover: o espaço até o ícone já
+     reserva esse deslocamento, então texto e ícone nunca se encostam */
+  gap: calc(var(--s-4) + var(--arrow-shift));
   min-width: 0;
   padding: 0 var(--s-5);
   background: var(--surface);
@@ -423,7 +425,7 @@ ol, ul { list-style: none; }
   border: var(--stroke) solid var(--border);
   background: var(--surface);
 }
-.progress-bar i { display: block; height: 100%; width: 100%; background: var(--surface-invert); }
+.progress-bar i { display: block; height: 100%; width: 100%; background: var(--primary); }
 .progress-bar::after {
   content: "";
   position: absolute;
@@ -923,7 +925,7 @@ body[data-tier="bad"] .stamp { rotate: 3deg; }
   align-items: center;
   gap: var(--s-3);
 }
-.hero-actions .btn { min-width: min(100%, 320px); }
+.hero-actions .btn { min-width: min(100%, 380px); }
 .hero-actions .best { margin: 0; }
 
 /* ---------- Cards de regras ---------- */
@@ -1009,3 +1011,7 @@ body[data-tier="bad"] .stamp { rotate: 3deg; }
   .pair { gap: var(--s-3); }
   .pair-amp { font-size: 40px; }
 }
+
+/* Cor primária no slot revelado no hover de todos os botões (inclusive o logo).
+   No resultado/final o slot do botão principal segue a cor do nível (regras mais específicas). */
+.btn, .btn-primary, .btn-logo { --hard-shadow: var(--primary); }
