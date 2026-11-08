@@ -406,12 +406,14 @@ ol, ul { list-style: none; }
   flex-direction: column;
   align-items: center;
   text-align: center;
-  padding: var(--s-6) var(--cell-pad) calc(var(--cell) / 2 + var(--s-6));
+  padding: var(--s-5) var(--cell-pad) calc(var(--cell) / 2 + var(--s-4));
   border: var(--stroke) solid var(--border);
 }
-.hero .display-xl { margin-top: var(--s-3); max-width: 16ch; font-size: clamp(2.5rem, 5.4vw, 5.75rem); }
-.hero .lead { margin-top: var(--s-4); }
-.hero .btn { margin-top: var(--s-5); min-width: min(100%, 360px); }
+.hero .pair-amp { font-size: var(--s-6); }
+.hero .display-xl { margin-top: var(--s-3); max-width: 21ch; font-size: clamp(2.5rem, 4.6vw, 5.25rem); }
+.hero .lead { margin-top: var(--s-3); max-width: 46ch; font-size: clamp(1.0625rem, 1.35vw, 1.375rem); }
+.hero .btn { margin-top: var(--s-4); min-width: min(100%, 360px); }
+.hero .best { margin-top: var(--s-3); }
 .best { margin-top: var(--s-4); font-size: var(--fs-eyebrow); color: var(--text-muted); }
 .best b { color: var(--text); font-weight: 500; }
 
@@ -456,10 +458,10 @@ ol, ul { list-style: none; }
 .rules:focus-visible { outline: 2px dashed var(--text); outline-offset: 6px; }
 .rules li {
   background: var(--surface);
-  padding: calc(var(--cell) / 2 + var(--cell-pad)) var(--cell-pad) var(--cell-pad);
+  padding: calc(var(--cell) / 2 + var(--s-4)) var(--s-5) var(--s-4);
 }
-.rules .title { margin-top: var(--s-5); font-size: clamp(1.5rem, 2vw, 2.25rem); }
-.rules p { margin-top: var(--s-4); max-width: 60ch; }
+.rules .title { margin-top: var(--s-3); font-size: clamp(1.25rem, 1.6vw, 1.75rem); }
+.rules p { margin-top: var(--s-2); max-width: 60ch; font-size: 1rem; line-height: 1.6; }
 
 /* ---------- Jogo: memorizar / escolher ---------- */
 
@@ -733,6 +735,10 @@ ol, ul { list-style: none; }
   :root { --cell: 80px; --cell-pad: 32px; --fs-display-l: clamp(2.5rem, 4.6vw, 4.5rem); }
   .wrap { padding-top: var(--s-4); }
   .numbered > div { padding: var(--s-3); }
+  .hero { padding-top: var(--s-4); }
+  .hero .btn { margin-top: var(--s-3); }
+  .rules li { padding-top: calc(var(--cell) / 2 + var(--s-3)); padding-bottom: var(--s-3); }
+  .rules p { line-height: 1.45; }
 }
 
 /* ---------- Tablet: uma coluna, área de jogo grande ---------- */
@@ -856,10 +862,10 @@ ol, ul { list-style: none; }
 
 /* marca: os 4 quadrados viram cor (neutros durante o jogo) */
 .logo-mark i { border-color: var(--text-invert); }
-.logo-mark i:nth-child(1) { background: var(--c-red); }
-.logo-mark i:nth-child(2) { background: var(--c-yellow); }
-.logo-mark i:nth-child(3) { background: var(--c-blue); }
-.logo-mark i:nth-child(4) { background: var(--c-green); }
+.logo-mark i:nth-child(1) { background: var(--p-red); }
+.logo-mark i:nth-child(2) { background: var(--p-yellow); }
+.logo-mark i:nth-child(3) { background: var(--p-blue); }
+.logo-mark i:nth-child(4) { background: var(--p-green); }
 body[data-view="memorize"] .logo-mark i,
 body[data-view="guess"] .logo-mark i { background: transparent; }
 body[data-view="memorize"] .logo-mark i:nth-child(1),
@@ -891,27 +897,31 @@ body[data-view="guess"] .logo-mark i:nth-child(4) { background: currentColor; }
   border: var(--stroke) solid var(--border);
 }
 .palette-strip i { aspect-ratio: 1; display: block; }
-.palette-strip i:nth-child(1) { background: var(--c-red); }
-.palette-strip i:nth-child(2) { background: var(--c-orange); }
-.palette-strip i:nth-child(3) { background: var(--c-yellow); }
-.palette-strip i:nth-child(4) { background: var(--c-green); }
-.palette-strip i:nth-child(5) { background: var(--c-blue); }
-.palette-strip i:nth-child(6) { background: var(--c-violet); }
+.palette-strip i:nth-child(1) { background: var(--p-red); }
+.palette-strip i:nth-child(2) { background: var(--p-peach); }
+.palette-strip i:nth-child(3) { background: var(--p-yellow); }
+.palette-strip i:nth-child(4) { background: var(--p-green); }
+.palette-strip i:nth-child(5) { background: var(--p-blue); }
+.palette-strip i:nth-child(6) { background: var(--p-violet); }
 
 /* hero: letreiro em amarelo cruzando a borda */
-.view-intro .marquee { background: var(--c-yellow); color: var(--ink); border-color: var(--ink); }
+.view-intro .marquee { background: var(--t-yellow); color: var(--ink); border-color: var(--ink); }
 
 /* hero: o slot revelado no hover do "Começar jogo" é azul */
-.view-intro .btn-primary { --hard-shadow: var(--c-blue); }
-.view-intro .btn-link-cell, #btn-howto { --hard-shadow: var(--c-pink); }
+.view-intro .btn-primary { --hard-shadow: var(--p-blue); }
+.view-intro .btn-link-cell, #btn-howto { --hard-shadow: var(--p-pink); }
 
 /* regras: cada número ganha um quadrado de cor */
 .rules .meta { display: inline-flex; align-items: center; gap: var(--s-2); }
 .rules .meta::before { content: ""; width: 12px; height: 12px; border: var(--stroke) solid var(--ink); }
-.rules li:nth-child(1) .meta::before { background: var(--c-red); }
-.rules li:nth-child(2) .meta::before { background: var(--c-yellow); }
-.rules li:nth-child(3) .meta::before { background: var(--c-blue); }
-.rules li:nth-child(4) .meta::before { background: var(--c-green); }
+.rules li:nth-child(1) .meta::before { background: var(--p-red); }
+.rules li:nth-child(2) .meta::before { background: var(--p-yellow); }
+.rules li:nth-child(3) .meta::before { background: var(--p-blue); }
+.rules li:nth-child(4) .meta::before { background: var(--p-green); }
+.rules li:nth-child(1) { background: var(--t-red); }
+.rules li:nth-child(2) { background: var(--t-yellow); }
+.rules li:nth-child(3) { background: var(--t-blue); }
+.rules li:nth-child(4) { background: var(--t-green); }
 
 /* revelação: a resposta certa sempre em verde; o resto segue o nível */
 .cell.is-answer { outline-color: var(--hit); }

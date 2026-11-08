@@ -18,10 +18,28 @@
   --c-violet: #8B5CF6;
   --c-pink: #FF73C6;
 
-  /* Semântica de feedback: acerto, perto, erro */
-  --hit: var(--c-green);
-  --near: var(--c-yellow);
-  --miss: var(--c-red);
+  /* As vivas acima ficam só no "COR?" do título. Todo o resto usa pastéis:
+     saturação moderada e luminosidade alta, para não competir com o jogo. */
+  --p-red: #F4A7A0;
+  --p-peach: #F9C9A8;
+  --p-yellow: #FADB8C;
+  --p-green: #A6DBBE;
+  --p-blue: #A9CBEE;
+  --p-violet: #CDBDEB;
+  --p-pink: #F3B3CB;
+
+  /* Fundos: só um sopro de cor */
+  --t-yellow: #FCF5E3;
+  --t-pink: #FBF0F3;
+  --t-green: #EEF7F1;
+  --t-blue: #EEF3FA;
+  --t-violet: #F3F0FA;
+  --t-red: #FBEFED;
+
+  /* Semântica de feedback: acerto, perto, erro (pastéis) */
+  --hit: var(--p-green);
+  --near: var(--p-yellow);
+  --miss: var(--p-red);
 
   /* Papéis semânticos */
   --surface: var(--paper);
