@@ -8,7 +8,7 @@ Jogo de memória cromática: memorize uma cor por 5 segundos e encontre-a entre 
 
 Abra `index.html` no navegador. Não há build nem dependências.
 
-Visual: neo-brutalismo editorial monocromático (grade exposta, caixas de 1px, sombras duras). Tipografia **Archivo** (display, eixo `wdth`) e **DM Sans** (textos), via Google Fonts. Tema claro nas telas de navegação e jogo; escuro nos resultados.
+Visual: neo-brutalismo editorial monocromático (grade exposta, caixas de 1px, sombras duras). Tipografia **Archivo** (display) e **DM Sans** (textos), servidas localmente em `fonts/` como instâncias estáticas geradas das fontes variáveis (licença OFL, inclusa) — renderização idêntica em todos os navegadores, inclusive Safari/iOS. Tema claro nas telas de navegação e jogo; escuro nos resultados.
 
 Guia de componentes com todos os estados: `styleguide.html`.
 
@@ -25,6 +25,7 @@ node --test tests/game.test.js
 | `js/color.js` | sRGB ↔ CIELAB/LCh e diferença CIEDE2000 (ΔE00) |
 | `js/game.js` | Regras e estado: geração das rodadas, cronômetro, bloqueios, pontuação |
 | `js/ui.js` | Interface; só renderiza o estado e repassa ações ao jogo |
+| `css/fonts.css` | `@font-face` das fontes locais |
 | `css/tokens.css` | Tokens: cores, tipografia, espaçamento, módulo da grade, sombras, durações |
 | `styles.css` | Componentes e telas (usa apenas os tokens) |
 | `styleguide.html` | Guia interno com todos os componentes e estados |

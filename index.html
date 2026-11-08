@@ -6,9 +6,7 @@
   <meta name="theme-color" content="#F7F7F7">
   <title>Matiz — memória de cor</title>
   <meta name="description" content="Memorize uma cor por 5 segundos e encontre-a entre 36 tons parecidos.">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@100..125,400..900&family=DM+Sans:opsz,wght@9..40,200..500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/fonts.css">
   <link rel="stylesheet" href="css/tokens.css">
   <link rel="stylesheet" href="styles.css">
 </head>
@@ -36,7 +34,7 @@
         </span>
       </button>
 
-      <button type="button" class="btn btn-link-cell" id="btn-howto">
+      <button type="button" class="btn btn-link-cell" id="btn-howto" aria-label="Como jogar">
         <span class="btn__panel"><svg class="i btn__arrow" aria-hidden="true"><use href="#i-arrow"/></svg><span class="btn__text">Como jogar</span><svg class="i btn__icon btn__icon--book" aria-hidden="true"><use href="#i-book"/></svg></span>
       </button>
 
@@ -65,34 +63,114 @@
       <!-- Abertura -->
       <section class="view view-intro" id="view-intro" aria-labelledby="intro-title">
         <div class="hero">
-          <span class="palette-strip" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></span>
-          <p class="pair"><span class="eyebrow">Memória</span><span class="pair-amp" aria-hidden="true">&amp;</span><span class="eyebrow">Percepção</span></p>
-          <h1 class="display-xl" id="intro-title">Quão bem você lembra de uma <span class="t-extrude">cor?</span></h1>
-          <p class="lead">Uma cor aparece por cinco segundos. Depois, ela se esconde entre 36 tons quase idênticos.</p>
-          <button type="button" class="btn btn-primary btn-xl" id="btn-start">
-            <span class="btn__panel"><svg class="i btn__arrow" aria-hidden="true"><use href="#i-arrow"/></svg><span class="btn__text">Começar jogo</span><svg class="i btn__icon btn__icon--rocket" aria-hidden="true"><use href="#i-rocket"/></svg></span>
-          </button>
-          <p class="best" id="intro-best" hidden></p>
+          <div class="hero-copy">
+            <p class="pair"><span class="eyebrow">Memória</span><span class="pair-amp" aria-hidden="true">&amp;</span><span class="eyebrow">Percepção</span></p>
+            <h1 class="display-xl" id="intro-title">Quão bem você lembra de uma <span class="t-extrude">cor?</span></h1>
+            <p class="lead">Uma cor aparece por cinco segundos. Depois, ela se esconde entre 36 tons quase idênticos.</p>
+            <div class="hero-actions">
+              <button type="button" class="btn btn-primary btn-xl" id="btn-start">
+                <span class="btn__panel"><svg class="i btn__arrow" aria-hidden="true"><use href="#i-arrow"/></svg><span class="btn__text">Começar jogo</span><svg class="i btn__icon btn__icon--rocket" aria-hidden="true"><use href="#i-rocket"/></svg></span>
+              </button>
+              <p class="best" id="intro-best" hidden></p>
+            </div>
+          </div>
 
-          <div class="marquee" aria-hidden="true">
-            <div class="marquee__track">
-              <span>Memorize</span><svg class="star"><use href="#i-star"/></svg>
-              <span>Encontre</span><svg class="star"><use href="#i-star"/></svg>
-              <span>36 tons</span><svg class="star"><use href="#i-star"/></svg>
-              <span>5 segundos</span><svg class="star"><use href="#i-star"/></svg>
-              <span>Memorize</span><svg class="star"><use href="#i-star"/></svg>
-              <span>Encontre</span><svg class="star"><use href="#i-star"/></svg>
-              <span>36 tons</span><svg class="star"><use href="#i-star"/></svg>
-              <span>5 segundos</span><svg class="star"><use href="#i-star"/></svg>
+          <div class="hero-art">
+            <!-- Gatinho escolhendo cores no notebook (ilustração própria, traço preto) -->
+            <svg class="cat" viewBox="0 0 400 306" role="img" aria-label="Ilustração: um gatinho usando o notebook, com quadrados de cor saindo da tela">
+              <g class="cat-swatches">
+                <rect class="sw sw-1" x="226" y="58" width="30" height="30"/>
+                <rect class="sw sw-2" x="272" y="30" width="24" height="24"/>
+                <rect class="sw sw-3" x="314" y="62" width="28" height="28"/>
+                <path class="spark" d="M300 96 l0 -12 M288 102 l-8 -8 M312 102 l8 -8"/>
+              </g>
+
+              <!-- cauda -->
+              <path class="ink-line tail" d="M74 300 C 22 300, 8 250, 34 222 C 50 205, 70 214, 62 230"/>
+
+              <!-- corpo -->
+              <path class="paper" d="M62 304 C 52 240, 74 186, 128 176 C 186 166, 222 214, 226 304 Z"/>
+              <!-- mancha preta nas costas -->
+              <path class="ink" d="M84 212 C 96 190, 126 182, 146 190 C 132 206, 118 230, 92 238 C 84 232, 82 222, 84 212 Z"/>
+
+              <!-- braço até o teclado -->
+              <g class="paw">
+                <path class="paper" d="M178 228 C 196 246, 214 266, 232 284 L 252 284 C 236 262, 214 236, 196 216 Z"/>
+                <ellipse class="paper" cx="246" cy="286" rx="16" ry="9"/>
+              </g>
+
+              <!-- cabeça -->
+              <path class="ink" d="M108 92 L 116 46 L 146 78 Z"/>
+              <path class="ink" d="M170 74 L 204 44 L 206 92 Z"/>
+              <ellipse class="paper" cx="158" cy="118" rx="58" ry="52"/>
+              <path class="ink" d="M106 104 C 112 86, 128 74, 146 72 C 138 92, 130 106, 108 118 Z"/>
+              <!-- olhos e focinho, olhando para a tela -->
+              <ellipse class="ink" cx="170" cy="114" rx="5.5" ry="8"/>
+              <ellipse class="ink" cx="196" cy="112" rx="5" ry="7.5"/>
+              <circle class="paper-dot" cx="172" cy="111" r="1.8"/>
+              <circle class="paper-dot" cx="198" cy="109" r="1.6"/>
+              <path class="ink" d="M204 126 l8 -2 l-4 7 Z"/>
+              <path class="ink-thin" d="M208 133 c -2 6, -10 6, -12 1 M208 133 c 2 6, 10 6, 12 0"/>
+              <path class="ink-thin" d="M218 126 l 30 -8 M219 133 l 30 2 M120 128 l -28 -4 M121 136 l -28 6"/>
+              <ellipse class="blush" cx="184" cy="138" rx="9" ry="5"/>
+
+              <!-- notebook visto de trás, com a tela voltada para o gato -->
+              <path class="paper" d="M290 128 L 352 120 L 346 290 L 282 292 Z"/>
+              <rect class="logo-sq q1" x="306" y="186" width="13" height="13"/>
+              <rect class="logo-sq q2" x="321" y="186" width="13" height="13"/>
+              <rect class="logo-sq q3" x="306" y="201" width="13" height="13"/>
+              <rect class="logo-sq q4" x="321" y="201" width="13" height="13"/>
+              <path class="paper" d="M196 292 L 356 292 L 360 304 L 190 304 Z"/>
+            </svg>
+
+            <div class="marquee" aria-hidden="true">
+              <div class="marquee__track">
+                <span>Memorize</span><svg class="star"><use href="#i-star"/></svg>
+                <span>Encontre</span><svg class="star"><use href="#i-star"/></svg>
+                <span>36 tons</span><svg class="star"><use href="#i-star"/></svg>
+                <span>5 segundos</span><svg class="star"><use href="#i-star"/></svg>
+                <span>Memorize</span><svg class="star"><use href="#i-star"/></svg>
+                <span>Encontre</span><svg class="star"><use href="#i-star"/></svg>
+                <span>36 tons</span><svg class="star"><use href="#i-star"/></svg>
+                <span>5 segundos</span><svg class="star"><use href="#i-star"/></svg>
+              </div>
             </div>
           </div>
         </div>
 
-        <ol class="rules" id="rules" tabindex="-1" aria-label="Como jogar">
-          <li><span class="meta">01</span><h2 class="title">Cinco segundos</h2><p>Uma cor aparece em destaque. Guarde-a bem: depois ela some por completo.</p></li>
-          <li><span class="meta">02</span><h2 class="title">Trinta e seis tons</h2><p>A cor original se esconde numa grade de tons vizinhos, quase idênticos.</p></li>
-          <li><span class="meta">03</span><h2 class="title">Uma única escolha</h2><p>Você tem um toque por rodada. São cinco rodadas, cada uma mais difícil.</p></li>
-          <li><span class="meta">04</span><h2 class="title">Precisão conta</h2><p>Os pontos vêm da distância perceptual (ΔE00). Só a cor exata vale 100.</p></li>
+        <ol class="bento" id="rules" tabindex="-1" aria-label="Como jogar">
+          <li class="bento-card b-time">
+            <svg class="doodle" viewBox="0 0 80 80" aria-hidden="true">
+              <circle class="paper" cx="40" cy="45" r="26"/><path class="ink-line" d="M40 45 V 30 M40 45 L 51 52"/>
+              <rect class="ink" x="34" y="10" width="12" height="7"/><path class="ink-line" d="M62 22 l5 -5"/>
+            </svg>
+            <div class="bento-text"><span class="meta">01</span><h2 class="title">Cinco segundos</h2><p>Uma cor aparece em destaque. Guarde-a bem: depois ela some.</p></div>
+          </li>
+          <li class="bento-card b-grid">
+            <svg class="doodle doodle-grid" viewBox="0 0 80 80" aria-hidden="true">
+              <rect class="paper" x="6" y="6" width="68" height="68"/>
+              <g class="mini">
+                <rect x="10" y="10" width="20" height="20" style="fill:#F0727C"/><rect x="30" y="10" width="20" height="20" style="fill:#F59A82"/><rect x="50" y="10" width="20" height="20" style="fill:#F7B89C"/>
+                <rect x="10" y="30" width="20" height="20" style="fill:#E9677A"/><rect x="30" y="30" width="20" height="20" style="fill:#EF8A8C"/><rect x="50" y="30" width="20" height="20" style="fill:#F4A99A"/>
+                <rect x="10" y="50" width="20" height="20" style="fill:#DC5A74"/><rect x="30" y="50" width="20" height="20" style="fill:#E77D8B"/><rect x="50" y="50" width="20" height="20" style="fill:#EE9C9A"/>
+              </g>
+            </svg>
+            <div class="bento-text"><span class="meta">02</span><h2 class="title">Trinta e seis tons</h2><p>A original se esconde entre tons vizinhos, quase idênticos.</p></div>
+          </li>
+          <li class="bento-card b-pick">
+            <svg class="doodle" viewBox="0 0 80 80" aria-hidden="true">
+              <path class="paper" d="M30 14 L 30 58 L 40 49 L 48 66 L 56 62 L 48 46 L 62 45 Z"/>
+              <path class="ink-line" d="M14 22 l-6 -4 M14 34 h-8 M20 12 l-3 -6"/>
+            </svg>
+            <div class="bento-text"><span class="meta">03</span><h2 class="title">Uma única escolha</h2><p>Um toque por rodada. São cinco, cada uma mais difícil.</p></div>
+          </li>
+          <li class="bento-card b-target">
+            <svg class="doodle" viewBox="0 0 80 80" aria-hidden="true">
+              <circle class="paper" cx="38" cy="42" r="28"/><circle class="paper" cx="38" cy="42" r="17"/><circle class="ink" cx="38" cy="42" r="7"/>
+              <path class="ink-line" d="M38 42 L 66 14 M60 12 l6 2 l2 6"/>
+            </svg>
+            <div class="bento-text"><span class="meta">04</span><h2 class="title">Precisão conta</h2><p>Os pontos vêm da distância perceptual (ΔE00). Só a cor exata vale 100.</p></div>
+          </li>
         </ol>
       </section>
 

@@ -18,15 +18,15 @@
   --c-violet: #8B5CF6;
   --c-pink: #FF73C6;
 
-  /* As vivas acima ficam só no "COR?" do título. Todo o resto usa pastéis:
-     saturação moderada e luminosidade alta, para não competir com o jogo. */
-  --p-red: #F4A7A0;
-  --p-peach: #F9C9A8;
-  --p-yellow: #FADB8C;
-  --p-green: #A6DBBE;
-  --p-blue: #A9CBEE;
-  --p-violet: #CDBDEB;
-  --p-pink: #F3B3CB;
+  /* As vivas acima ficam só no "COR?" do título. O resto usa tons médios:
+     mais vivos que pastel, sem pesar — contraste bom com o texto preto. */
+  --p-red: #F0727C;
+  --p-peach: #F7B89C;
+  --p-yellow: #F4DA86;
+  --p-green: #86D3A6;
+  --p-blue: #A9CDF2;
+  --p-violet: #C6B5F0;
+  --p-pink: #F6C4D6;
 
   /* Fundos: só um sopro de cor */
   --t-yellow: #FCF5E3;
@@ -36,10 +36,10 @@
   --t-violet: #F3F0FA;
   --t-red: #FBEFED;
 
-  /* Semântica de feedback: acerto, perto, erro (pastéis) */
-  --hit: var(--p-green);
-  --near: var(--p-yellow);
-  --miss: var(--p-red);
+  /* Feedback: acerto, perto, erro */
+  --hit: #4FC484;
+  --near: #F2C94C;
+  --miss: #EE5D6C;
 
   /* Papéis semânticos */
   --surface: var(--paper);
@@ -54,8 +54,8 @@
   --hatch-strong: repeating-linear-gradient(-45deg, transparent 0 6px, var(--ink) 6px 7.5px);
 
   /* Tipografia */
-  --font-display: "Archivo", "Arial Black", sans-serif;
-  --font-body: "DM Sans", "Helvetica Neue", Arial, sans-serif;
+  --font-display: "Archivo Wide", "Arial Black", sans-serif;
+  --font-body: "DM Sans Local", "Helvetica Neue", Arial, sans-serif;
 
   --fs-display-xl: clamp(3.5rem, 8vw, 8rem);
   --fs-display-l: clamp(2.75rem, 6vw, 6rem);
