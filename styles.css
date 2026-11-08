@@ -592,12 +592,6 @@ ol, ul { list-style: none; }
   visibility: hidden;
 }
 .stamp.is-on { visibility: visible; animation: stamp var(--dur-base) steps(3); }
-.stamp.is-miss {
-  color: var(--surface);
-  -webkit-text-stroke: 2px var(--text);
-  paint-order: stroke fill;
-  rotate: 3deg;
-}
 
 /* ---------- Modais (resultado, final) — tema escuro ---------- */
 
@@ -619,7 +613,7 @@ ol, ul { list-style: none; }
 .modal-copy .pair { justify-content: flex-start; }
 .modal-copy .btn { width: 100%; margin-top: auto; }
 
-.verdict { overflow-wrap: anywhere; }
+.verdict { font-size: clamp(2rem, 4.2vw, 4.5rem); overflow-wrap: normal; hyphens: none; }
 
 .numbered {
   width: 100%;
@@ -749,6 +743,10 @@ ol, ul { list-style: none; }
   .play-copy .progress { margin-top: var(--s-2); }
   .grid { width: min(100%, calc(100dvh - var(--cell) - 400px)); }
   .swatch { width: min(100%, calc(100dvh - var(--cell) - 480px)); }
+  .hud-cell { width: 104px; padding-inline: var(--s-3); }
+  .modal { grid-template-columns: 1fr; }
+  .cards, .ranking { border-left: 0; border-top: var(--stroke) solid var(--border); }
+  .cards { max-width: 560px; }
 }
 
 /* ---------- Mobile ---------- */
@@ -806,6 +804,7 @@ ol, ul { list-style: none; }
   .view-result .modal-copy .btn { order: 4; width: auto; margin-bottom: var(--s-4); }
   .modal { gap: var(--s-4); }
   .view-result .modal-copy .pair { display: none; }
+  .view-result .verdict { font-size: clamp(1.75rem, 8.6vw, 2.5rem); }
   .view-result .verdict { margin-top: var(--s-4); }
   .cards { border-left: 0; border-block: var(--stroke) solid var(--border); padding: var(--s-4); }
   .card + .card { margin-top: var(--s-4); }
@@ -842,4 +841,117 @@ ol, ul { list-style: none; }
   .marquee__track, .hud-time.is-critical, .cell.is-picked, .stamp.is-on, .stat.tick,
   .view.is-active .modal, .btn.is-loading::after { animation: none; }
   .view { transform: none; }
+}
+
+/* ==========================================================================
+   Cor — pontos estratégicos
+   Regra: cor no hero, na marca e no feedback; nunca perto da amostra
+   enquanto o jogador memoriza ou escolhe (não contamina a percepção).
+   ========================================================================== */
+
+/* nível → cor (sempre acompanhada de texto; cor nunca é o único sinal) */
+[data-tier="perfect"], [data-tier="eagle"], [data-tier="great"] { --tier: var(--hit); }
+[data-tier="good"] { --tier: var(--near); }
+[data-tier="bad"] { --tier: var(--miss); }
+
+/* marca: os 4 quadrados viram cor (neutros durante o jogo) */
+.logo-mark i { border-color: var(--text-invert); }
+.logo-mark i:nth-child(1) { background: var(--c-red); }
+.logo-mark i:nth-child(2) { background: var(--c-yellow); }
+.logo-mark i:nth-child(3) { background: var(--c-blue); }
+.logo-mark i:nth-child(4) { background: var(--c-green); }
+body[data-view="memorize"] .logo-mark i,
+body[data-view="guess"] .logo-mark i { background: transparent; }
+body[data-view="memorize"] .logo-mark i:nth-child(1),
+body[data-view="memorize"] .logo-mark i:nth-child(4),
+body[data-view="guess"] .logo-mark i:nth-child(1),
+body[data-view="guess"] .logo-mark i:nth-child(4) { background: currentColor; }
+
+/* hero: "COR?" troca de cor em degraus, sem gradiente */
+.hero .t-extrude { animation: cor-cycle 8.4s steps(1) infinite; }
+@keyframes cor-cycle {
+  0%      { color: var(--c-red); }
+  14.28%  { color: var(--c-orange); }
+  28.57%  { color: var(--c-yellow); }
+  42.86%  { color: var(--c-green); }
+  57.14%  { color: var(--c-blue); }
+  71.43%  { color: var(--c-violet); }
+  85.71%  { color: var(--c-pink); }
+}
+
+/* hero: faixa de paleta pendurada no canto (motivo da grade 6×6) */
+.palette-strip {
+  position: absolute;
+  top: calc(var(--stroke) * -1);
+  left: calc(var(--stroke) * -1);
+  display: grid;
+  grid-template-columns: repeat(6, calc(var(--cell) / 2));
+  gap: var(--stroke);
+  background: var(--border);
+  border: var(--stroke) solid var(--border);
+}
+.palette-strip i { aspect-ratio: 1; display: block; }
+.palette-strip i:nth-child(1) { background: var(--c-red); }
+.palette-strip i:nth-child(2) { background: var(--c-orange); }
+.palette-strip i:nth-child(3) { background: var(--c-yellow); }
+.palette-strip i:nth-child(4) { background: var(--c-green); }
+.palette-strip i:nth-child(5) { background: var(--c-blue); }
+.palette-strip i:nth-child(6) { background: var(--c-violet); }
+
+/* hero: letreiro em amarelo cruzando a borda */
+.view-intro .marquee { background: var(--c-yellow); color: var(--ink); border-color: var(--ink); }
+
+/* hero: o slot revelado no hover do "Começar jogo" é azul */
+.view-intro .btn-primary { --hard-shadow: var(--c-blue); }
+.view-intro .btn-link-cell, #btn-howto { --hard-shadow: var(--c-pink); }
+
+/* regras: cada número ganha um quadrado de cor */
+.rules .meta { display: inline-flex; align-items: center; gap: var(--s-2); }
+.rules .meta::before { content: ""; width: 12px; height: 12px; border: var(--stroke) solid var(--ink); }
+.rules li:nth-child(1) .meta::before { background: var(--c-red); }
+.rules li:nth-child(2) .meta::before { background: var(--c-yellow); }
+.rules li:nth-child(3) .meta::before { background: var(--c-blue); }
+.rules li:nth-child(4) .meta::before { background: var(--c-green); }
+
+/* revelação: a resposta certa sempre em verde; o resto segue o nível */
+.cell.is-answer { outline-color: var(--hit); }
+.cell-star { background: var(--hit); color: var(--ink); }
+.cell.is-picked:not(.is-answer)::after { background: var(--tier, var(--surface)); color: var(--ink); border-color: var(--ink); }
+.stamp {
+  color: var(--tier, var(--surface));
+  -webkit-text-stroke: .03em var(--ink);
+  paint-order: stroke fill;
+  text-shadow:
+    .01em .01em 0 var(--ink), .02em .02em 0 var(--ink), .03em .03em 0 var(--ink),
+    .04em .04em 0 var(--ink), .05em .05em 0 var(--ink), .06em .06em 0 var(--ink);
+}
+body[data-tier="bad"] .stamp { rotate: 3deg; }
+.gain { background: var(--tier, var(--surface)); color: var(--ink); border-color: var(--ink); }
+
+/* resultado da rodada: veredito, pontos, sombra do modal e do botão na cor do nível */
+.view-result .verdict .t-extrude { color: var(--tier, var(--surface)); }
+.view-result #res-score { color: var(--tier, var(--text)); }
+.view-result .modal { box-shadow: -12px 16px 0 0 var(--tier, var(--hard-shadow)); }
+.view-result .btn-primary { --hard-shadow: var(--tier, var(--ink-soft)); }
+
+/* resultado final: placar na cor da classificação; rodadas com etiqueta colorida */
+.view-final #final-total { color: var(--tier, var(--surface)); }
+.view-final .modal { box-shadow: -12px 16px 0 0 var(--tier, var(--hard-shadow)); }
+.view-final .btn-primary { --hard-shadow: var(--tier, var(--ink-soft)); }
+.ranking .eyebrow {
+  justify-self: start;
+  padding: var(--s-1) var(--s-2);
+  background: var(--tier);
+  color: var(--ink);
+  border: var(--stroke) solid var(--ink);
+}
+.ranking li:hover .eyebrow, .ranking li.is-top .eyebrow { color: var(--ink); }
+
+@media (max-width: 767px) {
+  .palette-strip { grid-template-columns: repeat(6, 20px); }
+  .view-result .modal, .view-final .modal { box-shadow: -6px 8px 0 0 var(--tier, var(--hard-shadow)); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero .t-extrude { animation: none; color: var(--c-blue); }
 }

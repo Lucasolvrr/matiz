@@ -14,6 +14,7 @@
   var VIEW_MS = reduceMotion ? 0 : 180;
   var CRITICAL_MS = 2000; // célula de tempo inverte e pisca nos 2 s finais
   var DARK_VIEWS = { result: true, final: true }; // camadas por cima do jogo
+  var STAMP_TEXT = { perfect: 'Acertou!', eagle: 'Quase!', great: 'Quase!', good: 'Perto!', bad: 'Errou!' };
 
   function $(id) { return document.getElementById(id); }
 
@@ -190,9 +191,11 @@
     answer.appendChild(star);
 
     // carimbo: acerto exato com extrusão; erro só com contorno
+    // carimbo e cores seguem o nível: verde = acerto, amarelo = perto, vermelho = erro
+    document.body.dataset.tier = result.tier;
     var stamp = $('stamp');
-    stamp.textContent = result.exact ? 'Acertou!' : 'Errou!';
-    stamp.className = 'stamp is-on ' + (result.exact ? 't-extrude' : 'is-miss');
+    stamp.textContent = STAMP_TEXT[result.tier];
+    stamp.className = 'stamp is-on';
     showGain(result.score);
     setTimeout(function () {
       if (t !== token) return;
@@ -229,6 +232,7 @@
 
     el.finalTotal.textContent = String(s.total);
     el.finalRank.textContent = s.rank;
+    document.body.dataset.tier = s.total >= 400 ? 'great' : s.total >= 250 ? 'good' : 'bad';
     el.finalPrecision.innerHTML = fmt(s.averagePrecision, 0) + '<small>%</small>';
     el.finalBest.textContent = String(isRecord ? s.total : best);
 
@@ -238,6 +242,7 @@
     s.rounds.forEach(function (r) {
       var li = document.createElement('li');
       if (!topMarked && r.score === topScore) { li.className = 'is-top'; topMarked = true; }
+      li.dataset.tier = r.tier;
       var n = document.createElement('span');
       n.className = 'meta';
       n.textContent = pad(r.round);
@@ -269,6 +274,7 @@
 
     switch (phase) {
       case 'ready':
+        delete document.body.dataset.tier;
         cancelAnimationFrame(rafId);
         renderMemorize();
         // O relógio de 5 s só começa quando a cor está totalmente visível.
@@ -309,6 +315,7 @@
     token++; // invalida revelações e transições pendentes
     cancelAnimationFrame(rafId);
     game.reset();
+    delete document.body.dataset.tier;
     updateStatus();
     renderBest();
     showView(views.intro);

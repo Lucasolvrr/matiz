@@ -8,7 +8,20 @@
   --ink-muted: #6B6B6B;
   --line: #E4E4E4;
   --line-dark: #262626;
-  --accent: none; /* sem acento: o jogo já é todo sobre cor */
+  /* Cores do jogo — chapadas, usadas em pontos estratégicos.
+     Nunca aparecem nas telas de memorizar/escolher (não alteram a percepção). */
+  --c-red: #FF4B3E;
+  --c-orange: #FF8A1F;
+  --c-yellow: #FFC83D;
+  --c-green: #22C46B;
+  --c-blue: #3B6CFF;
+  --c-violet: #8B5CF6;
+  --c-pink: #FF73C6;
+
+  /* Semântica de feedback: acerto, perto, erro */
+  --hit: var(--c-green);
+  --near: var(--c-yellow);
+  --miss: var(--c-red);
 
   /* Papéis semânticos */
   --surface: var(--paper);
