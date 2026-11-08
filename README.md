@@ -12,6 +12,8 @@ Visual: neo-brutalismo editorial monocromático (grade exposta, caixas de 1px, s
 
 Guia de componentes com todos os estados: `styleguide.html`.
 
+Marca: raposa em pixel art (`img/matiz-logo.svg`), usada no logo, no favicon (`favicon.svg`, `img/favicon-32.png`), no ícone de tela inicial do iOS (`img/apple-touch-icon.png`) e na imagem de compartilhamento (`img/og-image.png`).
+
 ## Testes
 
 ```sh

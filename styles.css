@@ -335,9 +335,6 @@ ol, ul { list-style: none; }
   text-transform: uppercase;
   line-height: 1;
 }
-.logo-mark { display: grid; grid-template-columns: repeat(2, 9px); gap: 3px; }
-.logo-mark i { width: 9px; height: 9px; border: var(--stroke) solid currentColor; }
-.logo-mark i:nth-child(1), .logo-mark i:nth-child(4) { background: currentColor; }
 
 #btn-howto { margin-left: auto; width: calc(100% / var(--cols)); }
 
@@ -790,19 +787,7 @@ ol, ul { list-style: none; }
 [data-tier="good"] { --tier: var(--near); }
 [data-tier="bad"] { --tier: var(--miss); }
 
-/* marca: os 4 quadrados viram cor (neutros durante o jogo) */
-.logo-mark i { border-color: var(--text-invert); }
-.logo-mark i:nth-child(1) { background: var(--p-red); }
-.logo-mark i:nth-child(2) { background: var(--p-yellow); }
-.logo-mark i:nth-child(3) { background: var(--p-blue); }
-.logo-mark i:nth-child(4) { background: var(--p-green); }
-body[data-view="memorize"] .logo-mark i,
-body[data-view="guess"] .logo-mark i { background: transparent; }
-body[data-view="memorize"] .logo-mark i:nth-child(1),
-body[data-view="memorize"] .logo-mark i:nth-child(4),
-body[data-view="guess"] .logo-mark i:nth-child(1),
-body[data-view="guess"] .logo-mark i:nth-child(4) { background: currentColor; }
-
+body[data-view="memorize"] body[data-view="memorize"] 
 /* hero: "COR?" troca de cor em degraus, sem gradiente */
 .hero .t-extrude { animation: cor-cycle 8.4s steps(1) infinite; }
 @keyframes cor-cycle {
@@ -1015,3 +1000,7 @@ body[data-tier="bad"] .stamp { rotate: 3deg; }
 /* Cor primária no slot revelado no hover de todos os botões (inclusive o logo).
    No resultado/final o slot do botão principal segue a cor do nível (regras mais específicas). */
 .btn, .btn-primary, .btn-logo { --hard-shadow: var(--primary); }
+
+/* Logo: raposa em pixel art (img/matiz-logo.svg) */
+.logo-img { display: block; height: 40px; width: auto; flex: none; }
+@media (max-width: 767px) { .logo-img { height: 30px; } }
