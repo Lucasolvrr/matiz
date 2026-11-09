@@ -8,7 +8,7 @@ Jogo de memória cromática: memorize uma cor por 5 segundos e encontre-a entre 
 
 Abra `index.html` no navegador. Não há build nem dependências.
 
-Visual: neo-brutalismo editorial monocromático (grade exposta, caixas de 1px, sombras duras). Tipografia **Jersey 15** (pixelada, títulos e números), **Archivo** (rótulos e botões) e **DM Sans** (textos), servidas localmente em `fonts/` como instâncias estáticas geradas das fontes variáveis (licença OFL, inclusa) — renderização idêntica em todos os navegadores, inclusive Safari/iOS. Tema claro nas telas de navegação e jogo; escuro nos resultados.
+Visual: neo-brutalismo editorial monocromático (grade exposta, caixas de 1px, sombras duras). Tipografia **Array** (matriz de pontos, títulos e números — carregada do CDN da Fontshare, ITF Free Font License; não fica no repositório), **Archivo** (rótulos e botões) e **DM Sans** (textos), servidas localmente em `fonts/` como instâncias estáticas geradas das fontes variáveis (licença OFL, inclusa) — renderização idêntica em todos os navegadores, inclusive Safari/iOS. Tema claro nas telas de navegação e jogo; escuro nos resultados.
 
 Guia de componentes com todos os estados: `styleguide.html`.
 

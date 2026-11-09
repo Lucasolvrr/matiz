@@ -10,9 +10,14 @@
 @font-face { font-family: "DM Sans Local"; src: url("../fonts/dmsans-medium.woff2") format("woff2"); font-weight: 500; font-display: swap; }
 
 /* "Matiz Display": família composta.
-   500/700 (rótulos, botões, eyebrows) → Archivo semi-expandida, legível em tamanho pequeno.
-   800/900 (títulos, números, carimbos) → Jersey 15 (OFL), pixelada, combina com a marca.
-   size-adjust 123% iguala a altura das maiúsculas (Jersey 0,556em vs Archivo 0,686em). */
+   500/700 (rótulos, botões, eyebrows) → Archivo semi-expandida (local, OFL).
+   800 → Array Semibold · 900 → Array Bold: matriz de pontos da Indian Type Foundry,
+   carregada do CDN oficial da Fontshare (ITF Free Font License). Os arquivos não ficam
+   neste repositório. Se o CDN falhar, cai para a Archivo.
+   size-adjust 110% iguala a altura das maiúsculas (Array 0,625em vs Archivo 0,686em). */
 @font-face { font-family: "Matiz Display"; src: url("../fonts/archivo-semiexp-medium.woff2") format("woff2"); font-weight: 500; font-display: swap; }
 @font-face { font-family: "Matiz Display"; src: url("../fonts/archivo-semiexp-bold.woff2") format("woff2"); font-weight: 700; font-display: swap; }
-@font-face { font-family: "Matiz Display"; src: url("../fonts/jersey15.woff2") format("woff2"); font-weight: 800 900; font-display: swap; size-adjust: 123%; }
+@font-face { font-family: "Matiz Display"; src: url("https://cdn.fontshare.com/wf/CASMZPM4VVUC7LKMFQX5SR6SI2NXI6WK/JAJOL32XMCA7KL72O3CN6EMCO3THGWPV/N2P4YTB27O7OQQY6FVFUL232EUHLL7SR.woff2") format("woff2"); font-weight: 800; font-display: swap; size-adjust: 110%; }
+@font-face { font-family: "Matiz Display"; src: url("https://cdn.fontshare.com/wf/UPIFVAOR6LZHAYRMF2C77WE3FN5BLNEC/INIDOMS2AGMFQXDWKOC6LOTPXKPZEIHL/2RWR7WKM4ZCDU656OKUXMQXLJH4H3EJD.woff2") format("woff2"); font-weight: 900; font-display: swap; size-adjust: 110%; }
+/* quando a Array não carrega, os pesos 800/900 usam a Archivo larga */
+@font-face { font-family: "Matiz Display Fallback"; src: url("../fonts/archivo-expanded-black.woff2") format("woff2"); font-weight: 800 900; font-display: swap; }

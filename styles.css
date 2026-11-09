@@ -1064,3 +1064,11 @@ body[data-tier="bad"] .stamp { rotate: 3deg; }
    (placar, moldura e slot do botão). As etiquetas por rodada mantêm a cor de cada nível. */
 body[data-view="final"][data-tier="good"] { --tier: var(--primary-dark); }
 body[data-view="final"] .ranking li[data-tier="good"] { --tier: var(--near); }
+
+/* "Como jogar" (célula de 1 coluna): padding menor para caber o rótulo + deslize do hover */
+#btn-howto .btn__panel { padding: 0 var(--s-5); }
+#btn-howto .btn__arrow { left: var(--s-5); }
+@media (min-width: 768px) {
+  #btn-howto { width: auto; min-width: calc(100% / var(--cols)); }
+  #btn-howto .btn__text { overflow: visible; }
+}

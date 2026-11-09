@@ -58,7 +58,7 @@
   --hatch-strong: repeating-linear-gradient(-45deg, transparent 0 6px, var(--ink) 6px 7.5px);
 
   /* Tipografia */
-  --font-display: "Matiz Display", "Archivo Wide", "Arial Black", sans-serif;
+  --font-display: "Matiz Display", "Matiz Display Fallback", "Archivo Wide", "Arial Black", sans-serif;
   --font-body: "DM Sans Local", "Helvetica Neue", Arial, sans-serif;
 
   --fs-display-xl: clamp(3.5rem, 8vw, 8rem);
